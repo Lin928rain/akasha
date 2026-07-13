@@ -1,5 +1,6 @@
 import { Button, Card, FileButton, Group, Text } from "@mantine/core";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 interface FileImportProps {
   file: File | null;
@@ -25,6 +26,7 @@ export default function FileImport({
   setFileText,
   acceptedFormats,
 }: FileImportProps) {
+  const [t] = useTranslation();
   useEffect(() => {
     file && readFile(file, setFileText);
   }, [file]);
@@ -43,7 +45,9 @@ export default function FileImport({
           }}
           accept={acceptedFormats}
         >
-          {(props) => <Button {...props}>Choose File</Button>}
+          {(props) => (
+            <Button {...props}>{t("import-export.choose-file")}</Button>
+          )}
         </FileButton>
       ) : (
         <Group justify="space-between" align="center" w="100%">
@@ -51,7 +55,7 @@ export default function FileImport({
             {file.name}
           </Text>{" "}
           <Button variant="default" onClick={() => setFile(null)}>
-            Remove File
+            {t("import-export.remove-file")}
           </Button>
         </Group>
       )}

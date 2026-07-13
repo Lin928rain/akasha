@@ -12,7 +12,7 @@ export default function GlobalApplicationInfo() {
         color: "gray",
       }}
     >
-      Skola (alpha version) | by Henning Thomas Flath
+      Akasha (alpha version) | by Henning Thomas Flath
     </Text>
   );
 }

@@ -3,6 +3,7 @@ import { NoteContent } from "./NoteContent";
 export interface NoteSkeleton {
   id: string;
   deck: string;
+  userId?: string;
   creationDate: Date;
   customOrder?: number;
 }

@@ -2,6 +2,8 @@ import { AppShell, Burger, Group } from "@mantine/core";
 import { useWindowScroll } from "@mantine/hooks";
 import { PropsWithChildren } from "react";
 import { createPortal } from "react-dom";
+import { useLocation } from "react-router-dom";
+import ConnectionStatusIndicator from "./ConnectionStatusIndicator";
 import classes from "./Header.module.css";
 
 interface HeaderProps {
@@ -28,6 +30,13 @@ export const AppHeaderContent = ({ children }: PropsWithChildren) => {
 
 export default function Header({ menuOpened, menuHandlers }: HeaderProps) {
   const [scroll] = useWindowScroll();
+  const location = useLocation();
+  const hasLocalHeaderStatus =
+    location.pathname.startsWith("/learn") ||
+    location.pathname.startsWith("/deck") ||
+    location.pathname.startsWith("/new") ||
+    location.pathname.startsWith("/notes");
+
   return (
     <AppShell.Header
       withBorder={false}
@@ -41,6 +50,7 @@ export default function Header({ menuOpened, menuHandlers }: HeaderProps) {
           size="sm"
         />
         <AppHeaderOutlet />
+        {!hasLocalHeaderStatus ? <ConnectionStatusIndicator /> : null}
       </Group>
     </AppShell.Header>
   );

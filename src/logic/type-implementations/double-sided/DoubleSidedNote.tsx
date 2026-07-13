@@ -1,4 +1,5 @@
 import DoubleSidedCardEditor from "@/app/editor/NoteEditor/DoubleSidedCardEditor";
+import { OcclusionRichText } from "@/components/OcclusionRichText/OcclusionRichText";
 import { NoteEditorProps, NoteTypeAdapter } from "@/logic/NoteTypeAdapter";
 import { Card, HTMLtoPreviewString } from "@/logic/card/card";
 import { deleteCard } from "@/logic/card/deleteCard";
@@ -22,16 +23,15 @@ export const DoubleSidedNoteTypeAdapter: NoteTypeAdapter<NoteType.DoubleSided> =
     ) {
       function FrontComponent() {
         return (
-          <Title
-            order={3}
-            fw={600}
-            dangerouslySetInnerHTML={{
-              __html:
+          <Title order={3} fw={600}>
+            <OcclusionRichText
+              html={
                 (card.content.frontIsField1
                   ? content?.field1
-                  : content?.field2) ?? "error",
-            }}
-          ></Title>
+                  : content?.field2) ?? "error"
+              }
+            />
+          </Title>
         );
       }
       return <FrontComponent />;
@@ -44,14 +44,16 @@ export const DoubleSidedNoteTypeAdapter: NoteTypeAdapter<NoteType.DoubleSided> =
     ) {
       function BackComponent() {
         return (
-          <span
-            dangerouslySetInnerHTML={{
-              __html:
+          <span>
+            <OcclusionRichText
+              html={
                 (card.content.frontIsField1
                   ? content?.field2
-                  : content?.field1) ?? "error",
-            }}
-          ></span>
+                  : content?.field1) ?? "error"
+              }
+              controlledIsVisible={true}
+            />
+          </span>
         );
       }
       return (
@@ -69,17 +71,21 @@ export const DoubleSidedNoteTypeAdapter: NoteTypeAdapter<NoteType.DoubleSided> =
     ) {
       return (
         <Stack gap="sm" w="100%">
-          <Title
-            order={3}
-            fw={600}
-            dangerouslySetInnerHTML={{ __html: note.content.field1 ?? "" }}
-          />
+          <Title order={3} fw={600}>
+            <OcclusionRichText
+              html={note.content.field1 ?? ""}
+              controlledIsVisible={true}
+            />
+          </Title>
           {showAllAnswers !== "none" && (
             <>
               <Divider className={common.lightBorderColor} />
-              <div
-                dangerouslySetInnerHTML={{ __html: note.content.field2 ?? "" }}
-              />
+              <div>
+                <OcclusionRichText
+                  html={note.content.field2 ?? ""}
+                  controlledIsVisible={true}
+                />
+              </div>
             </>
           )}
         </Stack>
@@ -87,7 +93,9 @@ export const DoubleSidedNoteTypeAdapter: NoteTypeAdapter<NoteType.DoubleSided> =
     },
 
     getSortFieldFromNoteContent(content) {
-      return HTMLtoPreviewString(content.field1);
+      return HTMLtoPreviewString(
+        content.field1.replace(/\{\{([\s\S]*?)\}\}/g, (_match, inner) => inner)
+      );
     },
 
     editor({

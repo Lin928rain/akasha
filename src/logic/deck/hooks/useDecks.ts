@@ -1,15 +1,16 @@
-import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "../../db";
-import { Deck } from "../deck";
+import { useDbQuery } from "../../useDbQuery";
+import { DeckSummary } from "../deck";
+import { getDeckSummaries } from "../getDeckSummaries";
 
 export function useDecks(
-  modify?: (decks: Deck[] | undefined) => Deck[] | undefined
-): [Deck[] | undefined, boolean] {
-  return useLiveQuery(
+  modify?: (decks: DeckSummary[] | undefined) => DeckSummary[] | undefined
+): [DeckSummary[] | undefined, boolean] {
+  return useDbQuery(
     () =>
-      db.decks
-        .toArray()
-        .then((decks) => [modify ? modify(decks) : decks, true]),
+      getDeckSummaries().then((decks) => [
+        modify ? modify(decks) : decks,
+        true,
+      ]),
     [],
     [undefined, false]
   );

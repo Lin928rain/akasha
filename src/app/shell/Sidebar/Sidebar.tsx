@@ -1,10 +1,15 @@
+import { getCurrentSession, signOut } from "@/logic/auth";
 import {
   ActionIcon,
   Box,
+  Button,
+  Divider,
   Group,
   Image,
+  Menu,
   NavLink,
   Stack,
+  Text,
   Title,
   Tooltip,
   useMantineTheme,
@@ -15,16 +20,20 @@ import {
   IconCards,
   IconChartBar,
   IconHome,
+  IconKey,
+  IconLogout,
+  IconSearch,
   IconSettings,
+  IconUserCircle,
   IconX,
 } from "@tabler/icons-react";
 import cx from "clsx";
-import { t } from "i18next";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import classes from "./Sidebar.module.css";
 
-import SpotlightCard from "../Spotlight/Spotlight";
-import CloudSection from "./CloudSection";
+import ChangePasswordModal from "../../settings/ChangePasswordModal";
 import DeckList from "./DeckList";
 
 const InteractiveNavLink = ({
@@ -83,6 +92,7 @@ function Sidebar({
     readonly toggle: () => void;
   };
 }) {
+  const [t] = useTranslation();
   const theme = useMantineTheme();
   const routeIsLearn = useLocation().pathname.includes("learn");
   const fullscreenMode =
@@ -93,42 +103,75 @@ function Sidebar({
       theme.breakpoints.lg +
       ") and (min-width: " +
       theme.breakpoints.xs +
-      ")",
+      ")"
   );
+  const [accountEmail, setAccountEmail] = useState<string>("");
+  const [logoutLoading, setLogoutLoading] = useState(false);
+  const [passwordModalOpened, setPasswordModalOpened] = useState(false);
 
   const landscapeMode = useMediaQuery("(orientation: landscape)");
 
-  return (
-    <Box
-      p="0.5rem"
-      className={cx(
-        classes.sidebar,
-        minimalMode && classes.minimalMode,
-        landscapeMode && classes.landscapeMode,
-        fullscreenMode && classes.fullscreenMode,
-        fullscreenMode && menuOpened && classes.fullscreenModeOpened,
-      )}
-    >
-      <Stack justify="space-between" h="100%">
-        <Stack gap="xs">
-          <Group className={classes.topRow}>
-            <Group gap="xs" align="center">
-              <Image src="/logo.svg" alt="Skola Logo" maw="1.5rem" />
-              <Title order={5}>Skola</Title>
-            </Group>
-            {fullscreenMode ? (
-              <ActionIcon
-                onClick={menuHandlers.close}
-                style={{ alignSelf: "end" }}
-                variant="subtle"
-              >
-                <IconX />
-              </ActionIcon>
-            ) : null}
-          </Group>
-          <SpotlightCard minimalMode={minimalMode} />
+  useEffect(() => {
+    getCurrentSession()
+      .then((session) => {
+        setAccountEmail(session?.user.email ?? "");
+      })
+      .catch(() => {
+        setAccountEmail("");
+      });
+  }, []);
 
+  async function handleLogout() {
+    setLogoutLoading(true);
+    try {
+      await signOut();
+    } finally {
+      setLogoutLoading(false);
+    }
+  }
+
+  return (
+    <>
+      <Box
+        className={cx(
+          classes.sidebar,
+          minimalMode && classes.minimalMode,
+          landscapeMode && classes.landscapeMode,
+          fullscreenMode && classes.fullscreenMode,
+          fullscreenMode && menuOpened && classes.fullscreenModeOpened
+        )}
+      >
+        <div className={classes.topRow}>
+          <Group gap="xs" align="center">
+            <Image src="/logo.png" alt="Akasha Logo" maw="1.5rem" />
+            <Title order={5}>Akasha</Title>
+          </Group>
+          {fullscreenMode ? (
+            <ActionIcon
+              onClick={menuHandlers.close}
+              style={{ alignSelf: "end" }}
+              variant="subtle"
+            >
+              <IconX />
+            </ActionIcon>
+          ) : null}
+        </div>
+        {minimalMode ? (
+          <div className={classes.minimalModeLogo}>
+            <Image src="/logo.png" alt="Akasha Logo" />
+          </div>
+        ) : null}
+
+        <div className={classes.scrollableArea}>
           <Stack gap={0}>
+            <InteractiveNavLink
+              label={t("sidebar.search")}
+              path="/search"
+              icon={<IconSearch />}
+              minimalMode={minimalMode}
+              fullscreenMode={fullscreenMode}
+              closeMenu={menuHandlers.close}
+            />
             <InteractiveNavLink
               label={t("home.title")}
               path="/home"
@@ -172,10 +215,97 @@ function Sidebar({
             />
           </Stack>
           <DeckList minimalMode={minimalMode} />
+        </div>
+        <Stack gap="xs" className={classes.accountSection}>
+            <Divider />
+            {minimalMode ? (
+              <Menu
+                shadow="md"
+                width={220}
+                position="right-end"
+                withArrow={true}
+              >
+                <Menu.Target>
+                  <Tooltip label="Account" position="right" keepMounted={false}>
+                    <ActionIcon variant="subtle" size="lg">
+                      <IconUserCircle size={18} />
+                    </ActionIcon>
+                  </Tooltip>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Label>{t("sidebar.account-label")}</Menu.Label>
+                  <Menu.Item disabled={true}>
+                    <Text size="xs" truncate="end">
+                      {accountEmail || "Signed in"}
+                    </Text>
+                  </Menu.Item>
+                  <Menu.Divider />
+                  <Menu.Item
+                    color="blue"
+                    leftSection={<IconKey size={14} />}
+                    onClick={() => setPasswordModalOpened(true)}
+                  >
+                    {t("settings.account.password.title")}
+                  </Menu.Item>
+                  <Menu.Item
+                    color="red"
+                    leftSection={<IconLogout size={14} />}
+                    onClick={handleLogout}
+                  >
+                    Sign out
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            ) : (
+              <>
+                <Group gap="xs" wrap="nowrap" align="flex-start">
+                  <IconUserCircle
+                    size={20}
+                    style={{ flexShrink: 0, marginTop: "0.5rem" }}
+                  />
+                  <Stack gap="xs" style={{ flex: 1 }}>
+                    <Stack gap={0}>
+                      <Text size="xs" c="dimmed">
+                        {t("sidebar.account-label")}
+                      </Text>
+                      <Text size="sm" truncate="end">
+                        {accountEmail || "Signed in"}
+                      </Text>
+                    </Stack>
+                    <Group gap="xs" wrap="nowrap" style={{ flex: 1 }}>
+                      <Button
+                        variant="light"
+                        size="compact-sm"
+                        leftSection={<IconKey size={16} />}
+                        onClick={() => setPasswordModalOpened(true)}
+                        justify="flex-start"
+                        style={{ flex: 1 }}
+                      >
+                        {t("settings.account.password.title")}
+                      </Button>
+                      <Button
+                        variant="light"
+                        size="compact-sm"
+                        leftSection={<IconLogout size={16} />}
+                        onClick={handleLogout}
+                        loading={logoutLoading}
+                        justify="flex-start"
+                        style={{ flex: 1 }}
+                      >
+                        {t("sidebar.logout-action")}
+                      </Button>
+                    </Group>
+                  </Stack>
+                </Group>
+              </>
+            )}
         </Stack>
-        <CloudSection minimalMode={minimalMode} />
-      </Stack>
-    </Box>
+        </Box>
+      <ChangePasswordModal
+        opened={passwordModalOpened}
+        onClose={() => setPasswordModalOpened(false)}
+      />
+    </>
   );
 }
 

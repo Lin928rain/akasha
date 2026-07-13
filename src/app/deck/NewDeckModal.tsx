@@ -1,17 +1,18 @@
 import { newDeck } from "@/logic/deck/newDeck";
 import { Button, Group, Modal, Stack, Text, TextInput } from "@mantine/core";
 import { getHotkeyHandler, useHotkeys } from "@mantine/hooks";
-import { t } from "i18next";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import ModalProps from "../../components/ModalProps";
-import { Deck } from "../../logic/deck/deck";
+import { DeckSummary } from "../../logic/deck/deck";
 
 interface NewDeckModalProps extends ModalProps {
-  superDeck?: Deck;
+  superDeck?: DeckSummary;
 }
 
 function NewDeckModal({ opened, setOpened, superDeck }: NewDeckModalProps) {
+  const [t] = useTranslation();
   const navigate = useNavigate();
 
   const [nameValue, setNameValue] = useState<string>("");

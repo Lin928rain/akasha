@@ -1,0 +1,409 @@
+{
+  "card": {
+    "delete-modal": {
+      "description": "您即将删除此卡片。此操作无法撤销。是否继续？",
+      "title": "删除卡片"
+    },
+    "menu": {
+      "debug": "调试",
+      "delete": "删除",
+      "edit": "编辑",
+      "move": "移动",
+      "options": "选项",
+      "statistics": "统计"
+    }
+  },
+  "deck": {
+    "add-cards": "添加卡片",
+    "add-cards-tooltip": "向此卡组添加卡片",
+    "create-deck-tooltip": "点击创建新卡组",
+    "error-failed-to-load": "此卡片加载失败",
+    "learning-cards-label": "学习中",
+    "learning-cards-label_one": "1 张学习中",
+    "learning-cards-label_other": "{{ count }} 张学习中",
+    "menu": {
+      "debug": "调试",
+      "delete": "删除",
+      "import-cards": "导入卡片",
+      "label": "菜单",
+      "manage-cards": "管理卡片",
+      "move": "移动",
+      "options": "选项",
+      "rename": "重命名"
+    },
+    "new-cards-label": "新卡片",
+    "new-cards-label_one": "1 张新卡片",
+    "new-cards-label_other": "{{ count }} 张新卡片",
+    "new-deck-button": "新建卡组",
+    "new-deck-modal": {
+      "description": "描述",
+      "description-placeholder": "可选",
+      "name": "名称",
+      "name-placeholder": "例如「西班牙语」、「解剖学」或「历史」",
+      "new-deck": "创建新卡组",
+      "new-subdeck": "在 {{superDeck}} 中创建子卡组",
+      "submit": "创建"
+    },
+    "no-decks-found": "此处没有卡组。点击上方按钮创建一个！",
+    "notebook": {
+      "title": "笔记本"
+    },
+    "rename": {
+      "new-name": "新名称",
+      "rename-button": "重命名",
+      "title": "重命名「{{deckName}}」"
+    },
+    "review-cards-label": "复习",
+    "review-cards-label_one": "1 张复习",
+    "review-cards-label_other": "{{ count }} 张复习",
+    "settings": "设置",
+    "subdeck": {
+      "add-subdeck-button": "添加",
+      "load-fail": "子卡组加载失败。",
+      "title": "子卡组"
+    },
+    "options": {
+      "coming-soon": "卡组选项功能即将推出。"
+    }
+  },
+  "edit-card": {
+    "edit-note": "编辑笔记"
+  },
+  "global": {
+    "cancel": "取消",
+    "feature-status": {
+      "in-development": "（开发中）",
+      "new": "（新功能）",
+      "planned": "（计划中）",
+      "experimental": "实验性"
+    },
+    "no-items-title": "这里看起来空荡荡的！",
+    "error": "错误"
+  },
+    "hero-deck-section": {
+    "all-cards-done-learn-anyway": "继续学习",
+    "all-cards-done-subtitle": "明天再回来，或选择继续学习。",
+    "all-cards-done-title": "恭喜！今日此卡组已完成！",
+    "error": "卡片加载失败。",
+    "learn": "学习",
+    "no-cards": "先创建一些卡片吧！",
+    "today-new-cards": "今日新卡片：{{count}}/{{limit}}"
+  },
+  "new-cards-limit": {
+    "title": "今日新卡片上限已达到",
+    "description": "您今天已经学习了 {{count}} 张新卡片，达到了每日上限 {{limit}} 张。您想要如何继续？",
+    "review-only": "仅复习",
+    "mixed-ratio": "按新旧比例混合"
+  },
+  "home": {
+    "create-deck": "创建卡组",
+    "no-decks-found": "您尚未创建任何卡组。",
+    "title": "首页",
+    "welcome": "欢迎！",
+    "welcome-user": "欢迎回来，{{name}}！"
+  },
+  "learning": {
+    "rate-again": "再来",
+    "rate-hard": "困难",
+    "rate-good": "良好",
+    "rate-easy": "简单",
+    "back-to-deck": "返回卡组",
+    "show-answer": "显示答案",
+    "new-card": "新卡片",
+    "learn-card": "学习中",
+    "review-card": "复习卡片",
+    "already-learned": "已学习",
+    "finished-accuracy-ratio": "准确率",
+    "finished-button-home": "返回首页",
+    "finished-button-to-deck": "返回卡组",
+    "finished-congrats": "恭喜！",
+    "finished-congrats-name": "恭喜，{{name}}！",
+    "finished-duration": "用时",
+    "finished-info": "您已完成今日此卡组的所有卡片。",
+    "finished-repetions-count": "重复次数"
+  },
+  "manage-cards": {
+    "table": {
+      "no-cards-found": "未找到卡片"
+    },
+    "title": "管理卡片"
+  },
+  "new-card": {
+    "add": "添加卡片",
+    "add-to-deck": "添加卡片到",
+    "card-type": "卡片类型"
+  },
+  "note": {
+    "delete-modal": {
+      "description": "您即将删除此笔记。此操作无法撤销。",
+      "title": "删除笔记"
+    },
+    "edit": {
+      "see-history-button": "查看历史",
+      "see-history-tooltip": "显示最近创建的卡片历史",
+      "submit-button": "保存卡片",
+      "submit-button-tooltip": "保存卡片",
+      "title": "编辑笔记",
+      "toolbar": {
+        "toggle-occlusion": "切换遮挡"
+      },
+      "type-specific": {
+        "double-sided": {
+          "back": "背面",
+          "front": "正面"
+        },
+        "normal": {
+          "back": "背面",
+          "front": "正面"
+        }
+      }
+    },
+    "menu": {
+      "delete": "删除",
+      "edit": "编辑",
+      "move": "移动"
+    },
+    "new": {
+      "adding-to-deck": "添加到「{{deckName}}」",
+      "select-note-type": {
+        "label": "卡片类型",
+        "tooltip": "选择您要创建的卡片类型"
+      },
+      "submit-button": "添加卡片",
+      "submit-button-tooltip": "添加卡片",
+      "title": "新建卡片"
+    },
+    "type": {
+      "cloze": "填空",
+      "image-occlusion": "遮挡",
+      "normal": "普通",
+      "undefined": "未定义"
+    },
+    "type-double-sided": "双面"
+  },
+  "notebook": {
+    "individual-show-answer-toggle-tooltip": "点击显示答案",
+    "options": {
+      "exclude-subdecks": "排除子卡组",
+      "menu": "笔记本菜单",
+      "show-answer": "显示答案"
+    }
+  },
+  "settings": {
+    "about": {
+      "description": "本程序由一位在德国学医的学生开发。Akasha 处于早期开发阶段，您可能会遇到一些错误。如果遇到，欢迎在代码仓库上提交反馈。",
+      "title": "关于"
+    },
+    "appearance": {
+      "color-scheme": "配色方案",
+      "color-scheme-auto": "跟随系统",
+      "color-scheme-dark": "深色",
+      "color-scheme-description": "选择始终使用浅色或深色主题，或使用系统的配色方案。",
+      "color-scheme-light": "浅色",
+      "title": "外观"
+    },
+    "database": {
+      "storage-used": "已使用",
+      "title": "数据库"
+    },
+    "developer": {
+      "description": "这是开发者选项卡，将包含开发者的额外设置。",
+      "title": "开发者"
+    },
+    "editing": {
+      "editor-options": "编辑器",
+      "individual-options": "单独选项",
+      "markdown-hint": "您也可以使用键盘快捷键和基本的 Markdown 语法来格式化文本。",
+      "show-code-option": "显示代码选项",
+      "show-highlight-option": "显示高亮选项",
+      "show-link-option": "显示链接选项",
+      "show-list-option": "显示列表选项",
+      "show-options-for-subscript-and-superscript": "显示上下标选项",
+      "show-strikethrough-option": "显示删除线选项",
+      "title": "编辑",
+      "use-bubble-menu": "使用内联菜单",
+      "use-toolbar": "使用工具栏",
+      "use-toolbar-description": "始终在编辑器上方显示格式选项工具栏"
+    },
+    "editing-use-bubble-menu-description": "仅在选中文本时显示格式选项",
+    "general": {
+      "enable-developer-mode": "启用开发者模式",
+      "enable-developer-mode-description": "这将启用用于调试和创建自定义插件及主题的额外选项。",
+      "enable-zen-mode": "禅模式",
+      "enable-zen-mode-description": "禅模式会在学习期间自动激活全屏模式。",
+      "language": "语言",
+      "language-description": "设置用户界面语言。",
+      "name": "名称",
+      "name-description": "此名称将用于个性化您的用户体验。",
+      "show-shortcut-hints": "显示快捷键",
+      "show-shortcut-hints-description": "可能的键盘快捷键将显示在菜单等处。",
+      "title": "常规"
+    },
+    "learn": {
+      "enable-visual-feedback": "启用视觉反馈",
+      "enable-visual-feedback-description": "根据评分显示短暂的彩色闪光反馈。",
+      "maximumInterval": "最大间隔",
+      "maximumIntervalDescription": "两次复习卡片之间的最大间隔天数",
+      "maxUniqueCardsPerSession": "每次学习不同卡片上限",
+      "maxUniqueCardsPerSessionDescription": "单次学习会话中最多接触的不同卡片数量。达到上限后可选择继续完成已接触卡片的复习或结束学习。设置为0表示无限制。",   
+      "maxCardsPerSession": "每次学习最大卡片数",
+      "maxCardsPerSessionDescription": "单次学习会话中最多学习的卡片数量（新卡片+复习）。设置为0表示无限制。",
+      "maxNewCardsPerDay": "每日最大新卡片数",
+      "maxNewCardsPerDayDescription": "每天最多学习的新卡片数量。设置为0表示无限制。",
+      "newToReviewRatio": "新卡片与复习卡片比例",
+      "newToReviewRatioDescription": "这决定了平均每复习一次会显示多少张新卡片。0.5 的值意味着复习和新卡片将以相同数量排序。",
+      "requestRetention": "目标保留率",
+      "requestRetentionDescription": "设置您希望在长期记忆中保留的百分比。注意：高值将导致更多复习和更短间隔。较低的百分比通常会减少学习量。如果目标保留率过低，您会过于频繁地忘记卡片，这可能会增加学习需求。建议值在 0.70 到 0.95 之间。",
+      "title": "学习"
+    },
+    "title": "设置"
+  },
+  "sidebar": {
+    "decks-add": "添加卡组",
+    "decks-title": "卡组",
+    "search": "搜索",
+    "search-placeholder": "搜索...",
+    "login-otp": "使用 OTP 登录",
+    "logged-in-as": "已登录为",
+    "logout": "退出登录"
+  },
+  "spotlight": {
+    "no-results": "无结果"
+  },
+  "statistics": {
+    "title": "统计",
+    "showing-of": "显示统计范围",
+    "week": "周",
+    "month": "月",
+    "year": "年",
+    "not-due": "未到期"
+  },
+  "debug": {
+    "title": "调试",
+    "name": "名称",
+    "id": "ID",
+    "subdecks": "子卡组",
+    "superdecks": "父卡组",
+    "cards": "卡片",
+    "notes": "笔记",
+    "direct-card-length": "直接卡片数量",
+    "contained-card-length": "包含的卡片数量",
+    "new": "新卡片",
+    "learning": "学习中",
+    "review": "复习",
+    "relearning": "重新学习",
+    "no-deck": "无卡组",
+    "faulty-card": "卡片错误"
+  },
+  "move": {
+    "title": "移动",
+    "move-to": "移动到",
+    "no-decks-found": "未找到卡组",
+    "no-decks-message": "似乎没有可移动此卡片的其他有效卡组。请尝试创建一个新的。",
+    "no-decks-message-note": "似乎没有可移动此笔记的其他有效卡组。请尝试创建一个新的。",
+    "no-decks-message-deck": "似乎没有可移动此卡组的其他有效卡组。请尝试创建一个新的。",
+    "move-card": "移动卡片",
+    "move-note": "移动笔记",
+    "move-deck": "移动卡组",
+    "move-deck-title": "移动卡组"
+  },
+  "import-export": {
+    "import": {
+      "title": "导入",
+      "from-paste": "从剪贴板",
+      "from-plain-text": "从纯文本",
+      "from-json": "从 JSON"
+    },
+    "choose-file": "选择文件",
+    "remove-file": "移除文件",
+    "paste-label": "在此粘贴您的卡片",
+    "paste-placeholder": "问题1\t答案1\n问题2\t答案2\n...",
+    "separator-label": "问题 / 答案分隔符",
+    "separator-description": "默认为制表符。如果数据使用不同的分隔符，请更改此项。",
+    "parse-and-continue": "解析文件并继续",
+    "json-import-info": "您可以在此处从 JSON 导入卡组，例如使用 CrowdAnki 导出的文件。请注意，目前仅支持基本选项，不支持媒体文件。",
+    "deck-name": "卡组名称",
+    "deck-description": "卡组描述",
+    "card-number": "卡片数量",
+    "front": "正面",
+    "back": "背面"
+  },
+  "database": {
+    "export-all": "导出全部",
+    "danger-zone": "危险区域",
+    "danger-zone-description": "此部分包含可能危险的设置。请格外小心！",
+    "import-database": "导入数据库（将覆盖冲突数据，例如设置）",
+    "delete-all": "删除所有数据",
+    "delete-all-warning": "这将删除您的所有数据，包括卡片、卡组和设置。绝对无法恢复。您确定要继续吗？"
+  },
+  "welcome": {
+    "title": "欢迎使用 Akasha！",
+    "subtitle": "一款在浏览器中运行的闪卡学习应用。",
+    "feature-no-signup": "无需注册",
+    "feature-free": "免费开源",
+    "feature-browser": "直接在浏览器中运行",
+    "feature-privacy": "无跟踪",
+    "beta-notice-part1": "请注意，此应用仍处于早期开发阶段。您可能会遇到错误和缺失的功能。如果您发现任何问题，欢迎在",
+    "github-link": "GitHub 仓库",
+    "beta-notice-part2": "上报告。",
+    "about-title": "关于项目",
+    "about-description-part1": "Akasha 是一个由学生开发的项目，旨在为 Anki 和 SuperMemo 等间隔重复应用提供替代方案。它是开源的，完全免费使用。重点在于创造有趣且直观的用户体验。您可以在",
+    "about-description-part2": "上找到更多信息。",
+    "privacy-title": "关于隐私",
+    "privacy-description": "隐私是此项目的重点。Akasha 使用 IndexedDB API 将卡组和卡片保存在浏览器本地。此外，还使用本地存储和 cookie 存储相关数据。我们不收集任何个人数据。目前，正在开发同步功能，允许您将数据存储在云端。但是，此功能完全是可选的。",
+    "get-started": "立即开始"
+  },
+  "notification": {
+    "saved": "卡片已保存",
+    "saved-message": "更改已保存！",
+    "added": "卡片已添加",
+    "added-message": "卡片添加成功！",
+    "moved-card": "卡片已移动",
+    "moved-card-message": "卡片已移动到 {{deckName}}！",
+    "moved-note": "笔记已移动",
+    "moved-note-message": "笔记已移动到 {{deckName}}！",
+    "moved-deck": "卡组已移动",
+    "moved-deck-message": "卡组已移动到 {{deckName}}！",
+    "deleted-card": "卡片已删除",
+    "deleted-deck": "卡组已删除",
+    "deleted-note": "笔记已删除",
+    "deleted-message": "此对象已被删除！",
+    "error": "出错了！",
+    "save-failed": "无法保存更改。请稍后再试！",
+    "add-failed": "无法添加卡片。请稍后再试！",
+    "delete-card-failed": "无法删除卡片",
+    "delete-deck-failed": "无法删除卡组",
+    "delete-note-failed": "无法删除笔记",
+    "delete-failed-message": "删除此对象时出错。请稍后再试！",
+    "generic-fail": "此操作无法完成。请稍后再试！"
+  },
+  "today": {
+    "title": "今日",
+    "description": "今日视图是一个计划中的功能。在这里，您将看到需要复习的即将到来的卡组列表。",
+    "overview-title": "今日概览",
+    "new-cards-progress": "今日进度: {{count}}/{{limit}} 张新卡片",
+    "start-learning": "开始学习",
+    "due-decks-title": "待复习卡组",
+    "total-due": "共 {{count}} 个卡组",
+    "loading-decks": "加载卡组中...",
+    "no-due-decks": "今天没有待复习的卡组。去创建一些卡片或休息一下！",
+    "all-done-title": "今日已完成！",
+    "all-done-message": "恭喜！您已完成今日所有待复习的卡片。好好休息，明天继续加油！"
+  },
+  "image-occlusion": {
+    "editor-hint": "在正面输入内容，选中要遮挡的文字，点击「添加遮挡」按钮。学习时，遮挡内容显示为黑色块，点击可显示/隐藏。",
+    "front": "正面（带遮挡）",
+    "front-placeholder": "输入正面内容，选中文字添加遮挡...",
+    "back": "背面（完整内容）",
+    "back-placeholder": "输入背面内容（显示答案时展示）...",
+    "occlusions": "已添加的遮挡",
+    "add-occlusion": "添加遮挡",
+    "cancel-add": "取消添加",
+    "occlusions-count": "个遮挡",
+    "occlusion-added": "遮挡已添加",
+    "occlusion-added-message": "已遮挡: {{text}}...",
+    "click-to-reveal": "点击显示",
+    "preview": "预览",
+    "no-content": "请先输入正面内容"
+  }
+}

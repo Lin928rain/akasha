@@ -1,4 +1,4 @@
-import { Deck } from "@/logic/deck/deck";
+import { DeckSummary } from "@/logic/deck/deck";
 import { Select, Stack, Text } from "@mantine/core";
 import { IconCards } from "@tabler/icons-react";
 import { useParams } from "react-router-dom";
@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 interface SelectDecksHeaderProps {
   label: string;
   disableAll?: boolean;
-  decks?: Deck[];
+  decks?: DeckSummary[];
   onSelect: (deckId: string | null) => void;
 }
 

@@ -4,6 +4,7 @@ import { useSubDecks } from "@/logic/deck/hooks/useSubDecks";
 import { useSuperDecks } from "@/logic/deck/hooks/useSuperDecks";
 import { Anchor, Modal, Stack, Text } from "@mantine/core";
 import { State } from "fsrs.js";
+import { useTranslation } from "react-i18next";
 import { Deck } from "../../logic/deck/deck";
 
 interface DebugDeckModalProps {
@@ -13,6 +14,7 @@ interface DebugDeckModalProps {
 }
 
 function DebugDeckModal({ opened, setOpened, deck }: DebugDeckModalProps) {
+  const [t] = useTranslation();
   const [cards] = useCardsOf(deck);
   const states = useStatesOf(cards ?? []);
 
@@ -21,18 +23,22 @@ function DebugDeckModal({ opened, setOpened, deck }: DebugDeckModalProps) {
   const [subDecks] = useSubDecks(deck);
 
   return (
-    <Modal opened={opened} onClose={() => setOpened(false)} title="Debug">
+    <Modal
+      opened={opened}
+      onClose={() => setOpened(false)}
+      title={t("debug.title")}
+    >
       <Stack justify="space-between">
         {deck ? (
           <Stack gap="xs">
             <Text fz="xs">
-              <b>Name: </b>"{deck.name}"
+              <b>{t("debug.name")}: </b>"{deck.name}"
             </Text>
             <Text fz="xs">
-              <b>ID: </b>"{deck.id}"
+              <b>{t("debug.id")}: </b>"{deck.id}"
             </Text>
             <Text fz="xs">
-              <b>SubDecks: </b>
+              <b>{t("debug.subdecks")}: </b>
               {subDecks?.map((s) => (
                 <span key={s.id}>
                   <Anchor href={"/deck/" + s.id}>{s.name}</Anchor>,{" "}
@@ -40,7 +46,7 @@ function DebugDeckModal({ opened, setOpened, deck }: DebugDeckModalProps) {
               ))}
             </Text>
             <Text fz="xs">
-              <b>SuperDecks: </b>"
+              <b>{t("debug.superdecks")}: </b>"
               {superDecks?.map((s) => (
                 <span key={s.id}>
                   <Anchor href={"/deck/" + s.id}>{s.name}</Anchor>,{" "}
@@ -49,14 +55,14 @@ function DebugDeckModal({ opened, setOpened, deck }: DebugDeckModalProps) {
               "
             </Text>
             <Text fz="xs">
-              <b>Cards: </b>"
+              <b>{t("debug.cards")}: </b>"
               {deck.cards.map((s) => (
                 <span key={s}>{s + ", "}</span>
               ))}
               "
             </Text>
             <Text fz="xs">
-              <b>Notes: </b>"
+              <b>{t("debug.notes")}: </b>"
               {deck.notes.map((s) => (
                 <span key={s}>{s + ", "}</span>
               ))}
@@ -64,32 +70,32 @@ function DebugDeckModal({ opened, setOpened, deck }: DebugDeckModalProps) {
             </Text>
 
             <Text fz="xs">
-              <b>Direct Card Length: </b>
+              <b>{t("debug.direct-card-length")}: </b>
               {deck.cards.length}
             </Text>
             <Text fz="xs">
-              <b>Contained Card Length: </b>
+              <b>{t("debug.contained-card-length")}: </b>
               {cards?.length}
             </Text>
             <Text fz="xs">
-              <b>New: </b>
+              <b>{t("debug.new")}: </b>
               {states[State.New]}
             </Text>
             <Text fz="xs">
-              <b>Learning: </b>
+              <b>{t("debug.learning")}: </b>
               {states[State.Learning]}
             </Text>
             <Text fz="xs">
-              <b>Review: </b>
+              <b>{t("debug.review")}: </b>
               {states[State.Review]}
             </Text>
             <Text fz="xs">
-              <b>Relearning: </b>
+              <b>{t("debug.relearning")}: </b>
               {states[State.Relearning]}
             </Text>
           </Stack>
         ) : (
-          <Text fz="xs">No deck</Text>
+          <Text fz="xs">{t("debug.no-deck")}</Text>
         )}
       </Stack>
     </Modal>

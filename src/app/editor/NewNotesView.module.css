@@ -19,8 +19,11 @@
 }
 
 .newNotesMain {
-    flex-grow: 1;
+    flex: 1;
+    min-height: 0;
     padding: var(--mantine-spacing-lg);
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .newNotesEditorContainer {
@@ -36,4 +39,5 @@
     justify-content: space-between;
     align-items: center;
     background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+    flex-shrink: 0;
 }

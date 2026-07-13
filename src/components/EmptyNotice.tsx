@@ -6,7 +6,7 @@ import {
   ThemeIcon,
 } from "@mantine/core";
 import { IconProps } from "@tabler/icons-react";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 interface EmptyNoticeProps {
   icon: React.FC<IconProps>;
@@ -23,6 +23,7 @@ function EmptyNotice({
   p,
   hideTitle,
 }: EmptyNoticeProps) {
+  const [t] = useTranslation();
   return (
     <Stack gap="0" align="center" p={p}>
       <ThemeIcon variant="white" c="dimmed" size="lg" mb="xs">

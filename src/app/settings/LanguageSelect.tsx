@@ -17,18 +17,16 @@ export default function LanguageSelect() {
       description={t("settings.general.language-description")}
       onChange={(value) => {
         if (value !== null) {
+          console.log("[i18n] language select:", value);
           setSetting("language", value as SupportedLanguages);
           i18n.changeLanguage(value);
-          window.location.reload();
         }
 
         return value;
       }}
       data={[
-        { value: SupportedLanguages.German, label: "Deutsch (Incomplete)" },
         { value: SupportedLanguages.English, label: "English" },
-        { value: SupportedLanguages.Swedish, label: "Svenska (Incomplete)" },
-        { value: SupportedLanguages.Portuguese, label: "Português (Incompleto)" },
+        { value: SupportedLanguages.Chinese, label: "中文" },
       ]}
     />
   );

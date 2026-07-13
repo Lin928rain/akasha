@@ -1,0 +1,111 @@
+.modalBody {
+  padding: var(--mantine-spacing-lg);
+}
+
+.cardGrid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+  padding: 1rem;
+  user-select: none;
+}
+
+.cardItem {
+  position: relative;
+  border: 2px solid var(--mantine-color-gray-3);
+  border-radius: var(--mantine-radius-md);
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background-color: var(--mantine-color-white);
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  touch-action: none;
+}
+
+.cardItem:hover {
+  border-color: var(--mantine-color-blue-6);
+  background-color: var(--mantine-color-blue-0);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.cardItem.selected {
+  border-color: var(--mantine-color-green-6);
+  background-color: var(--mantine-color-green-0);
+}
+
+.cardItem.selected:hover {
+  background-color: var(--mantine-color-green-1);
+}
+
+.cardContent {
+  flex: 1;
+  overflow: hidden;
+}
+
+.checkIndicator {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.cardItem.selected .checkIndicator {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 拖动选择框 */
+.dragSelection {
+  position: absolute;
+  border: 2px solid var(--mantine-color-blue-6);
+  background-color: rgba(33, 150, 243, 0.2);
+  pointer-events: none;
+  z-index: 100;
+  border-radius: var(--mantine-radius-sm);
+}
+
+/* 深色模式 */
+[data-mantine-color-scheme="dark"] .cardItem {
+  background-color: var(--mantine-color-dark-6);
+}
+
+[data-mantine-color-scheme="dark"] .cardItem:hover {
+  background-color: var(--mantine-color-dark-5);
+}
+
+[data-mantine-color-scheme="dark"] .cardItem.selected {
+  background-color: var(--mantine-color-green-9);
+  border-color: var(--mantine-color-green-4);
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .cardGrid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.5rem;
+  }
+
+  .cardItem {
+    min-height: 80px;
+    padding: 0.5rem;
+  }
+}
+
+/* 卡片内容溢出处理 */
+.cardContent {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* 拖动时禁用文本选择 */
+.cardGrid:active {
+  cursor: crosshair;
+}

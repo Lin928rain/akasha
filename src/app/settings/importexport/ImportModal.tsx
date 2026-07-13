@@ -1,7 +1,8 @@
 import { Modal, Tabs } from "@mantine/core";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import ModalProps from "../../../components/ModalProps";
-import { Deck } from "../../../logic/deck/deck";
+import { DeckSummary } from "../../../logic/deck/deck";
 
 import { IconClipboardText, IconJson, IconTxt } from "@tabler/icons-react";
 import ImportFromJSON from "./ImportFromJSON";
@@ -9,7 +10,7 @@ import ImportFromPaste from "./ImportFromPaste";
 import ImportFromPlainText from "./ImportFromPlainText";
 
 interface ImportModalProps extends ModalProps {
-  deck?: Deck;
+  deck?: DeckSummary;
 }
 
 export interface ImportFromSourceProps {
@@ -19,7 +20,7 @@ export interface ImportFromSourceProps {
   setFileText: (fileText: string | null) => void;
   importStatus: ImportStatus;
   setImportStatus: (status: ImportStatus) => void;
-  deck?: Deck;
+  deck?: DeckSummary;
 }
 
 export type ImportStatus = "passive" | "importing" | "success" | "error";
@@ -29,6 +30,7 @@ export default function ImportModal({
   setOpened,
   deck,
 }: ImportModalProps) {
+  const [t] = useTranslation();
   const [tab, setTab] = useState("cardsfrompaste");
   const [file, setFile] = useState<File | null>(null);
   const [fileText, setFileText] = useState<string | null>(null);
@@ -42,7 +44,7 @@ export default function ImportModal({
         setFile(null);
         setFileText(null);
       }}
-      title="Import"
+      title={t("import-export.import.title")}
     >
       {(importStatus === "passive" || importStatus === "importing") && (
         <Tabs
@@ -57,21 +59,21 @@ export default function ImportModal({
               leftSection={<IconClipboardText />}
               onClick={() => setTab("cardsfrompaste")}
             >
-              From Paste
+              {t("import-export.import.from-paste")}
             </Tabs.Tab>
             <Tabs.Tab
               value="cardsfromplaintext"
               leftSection={<IconTxt />}
               onClick={() => setTab("cardsfromplaintext")}
             >
-              From Plain Text
+              {t("import-export.import.from-plain-text")}
             </Tabs.Tab>
             <Tabs.Tab
               value="deckfromjson"
               leftSection={<IconJson />}
               onClick={() => setTab("deckfromjson")}
             >
-              From JSON
+              {t("import-export.import.from-json")}
             </Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="cardsfrompaste">

@@ -13,8 +13,10 @@ import {
 import { useLocalStorage } from "@mantine/hooks";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function WelcomeView() {
+  const [t] = useTranslation();
   const [_, setRegistered] = useLocalStorage({
     key: "registered",
     defaultValue: false,
@@ -26,8 +28,8 @@ export default function WelcomeView() {
       <Stack gap="2rem" maw="600px">
         <div style={{ position: "relative" }}>
           <Image
-            src="logo.svg"
-            alt="Skola Logo"
+            src="logo.png"
+            alt="Akasha Logo"
             maw="4rem"
             style={{
               position: "absolute",
@@ -36,16 +38,16 @@ export default function WelcomeView() {
               zIndex: -1,
             }}
           />
-          <Image src="logo.svg" alt="Skola Logo" maw="4rem" />
+          <Image src="logo.png" alt="Akasha Logo" maw="4rem" />
         </div>
         <Stack gap="xs">
-          <Title order={1}>Welcome to Skola!</Title>
-          <Text fz="sm">A flash card learning app here in your browser.</Text>
+          <Title order={1}>{t("welcome.title")}</Title>
+          <Text fz="sm">{t("welcome.subtitle")}</Text>
           {[
-            "No sign-up required",
-            "Free and open source",
-            "Directly in your browser",
-            "No tracking",
+            t("welcome.feature-no-signup"),
+            t("welcome.feature-free"),
+            t("welcome.feature-browser"),
+            t("welcome.feature-privacy"),
           ].map((item) => (
             <Group key={item} align="center" gap="xs">
               <CheckIcon
@@ -57,42 +59,29 @@ export default function WelcomeView() {
           ))}
         </Stack>
         <Alert color="gray" icon={<IconInfoCircle />}>
-          Please note that this app is still in early development. You may
-          encounter bugs and missing features. If you find any issues, consider
-          reporting them on the{" "}
+          {t("welcome.beta-notice-part1")}{" "}
           <Anchor
-            href="https://www.github.com/h16nning/skola"
+            href="https://www.github.com/h16nning/akasha"
             fz="sm"
             style={{ whiteSpace: "nowrap" }}
           >
-            GitHub repository
+            {t("welcome.github-link")}
           </Anchor>
-          .
+          {t("welcome.beta-notice-part2")}
         </Alert>
         <Stack gap="xs">
-          <Title order={3}>About the project</Title>
+          <Title order={3}>{t("welcome.about-title")}</Title>
           <Text fz="sm">
-            Skola is a project developed by a student aiming to provide an
-            alternative to spaced repetition apps like Anki and SuperMemo. It is
-            open-source and completely free to use. The focus lies on creating a
-            fun to use and intuitive experience. You can find more information
-            on the{" "}
-            <Anchor href="https://www.github.com/h16nning/skola" fz="sm">
-              GitHub repository
+            {t("welcome.about-description-part1")}{" "}
+            <Anchor href="https://www.github.com/h16nning/akasha" fz="sm">
+              {t("welcome.github-link")}
             </Anchor>
-            .
+            {t("welcome.about-description-part2")}
           </Text>
         </Stack>
         <Stack gap="xs">
-          <Title order={3}>About privacy</Title>
-          <Text fz="sm">
-            Privacy is a priority of this project. Skola saves decks and cards
-            locally in your browser using the IndexedDB API. Furthermore local
-            storage and cookies are being used to store relevant data. We do not
-            collect any personal data. Currently, a syncing feature is under
-            development allowing you to store your data in the cloud. However,
-            this feature is totally optional.
-          </Text>
+          <Title order={3}>{t("welcome.privacy-title")}</Title>
+          <Text fz="sm">{t("welcome.privacy-description")}</Text>
         </Stack>
         <Group align="start">
           <Button
@@ -100,7 +89,7 @@ export default function WelcomeView() {
             size="md"
             variant="gradient"
           >
-            Get Started Now
+            {t("welcome.get-started")}
           </Button>
         </Group>
       </Stack>

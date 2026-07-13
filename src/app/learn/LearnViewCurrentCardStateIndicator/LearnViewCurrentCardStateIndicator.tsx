@@ -9,6 +9,7 @@ import {
 import { Card as Model } from "fsrs.js";
 import { State } from "fsrs.js";
 import React, { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import classes from "./LearnViewCurrentCardStateIndicator.module.css";
 
 interface LearnViewCurrentCardStateIndicatorProps {
@@ -44,12 +45,19 @@ function Indicator({
 export default function LearnViewCurrentCardStateIndicator({
   currentCardModel,
 }: LearnViewCurrentCardStateIndicatorProps) {
+  const [t] = useTranslation();
   const indicator = useCallback(() => {
     if (currentCardModel === undefined) {
       return;
     }
     if (currentCardModel.state === State.New) {
-      return <Indicator color="grape" icon={IconSparkles} text="New card" />;
+      return (
+        <Indicator
+          color="grape"
+          icon={IconSparkles}
+          text={t("learning.new-card")}
+        />
+      );
     } else if (
       currentCardModel.state === State.Learning ||
       currentCardModel.state === State.Relearning
@@ -58,20 +66,30 @@ export default function LearnViewCurrentCardStateIndicator({
         <Indicator
           color="orange"
           icon={IconCircleArrowUpRight}
-          text="Learn card"
+          text={t("learning.learn-card")}
         />
       );
     } else if (
       currentCardModel.state === State.Review &&
       currentCardModel.due <= new Date(Date.now())
     ) {
-      return <Indicator color="blue" icon={IconBook} text="Review card" />;
+      return (
+        <Indicator
+          color="blue"
+          icon={IconBook}
+          text={t("learning.review-card")}
+        />
+      );
     } else {
       return (
-        <Indicator color="gray" icon={IconInfoCircle} text="Already learned" />
+        <Indicator
+          color="gray"
+          icon={IconInfoCircle}
+          text={t("learning.already-learned")}
+        />
       );
     }
-  }, [currentCardModel]);
+  }, [currentCardModel, t]);
 
   if (currentCardModel === undefined) {
     return null;

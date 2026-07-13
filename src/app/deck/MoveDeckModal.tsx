@@ -1,13 +1,14 @@
 import { successfullyMovedCardTo } from "@/components/Notification/Notification";
-import { Deck } from "@/logic/deck/deck";
-import { useDecks } from "@/logic/deck/hooks/useDecks";
+import { DeckSummary } from "@/logic/deck/deck";
+import { useDeckSummaries } from "@/logic/deck/hooks/useDeckSummaries";
 import { moveDeck } from "@/logic/deck/moveDeck";
 import { Button, Group, Modal, Select, Stack, Text } from "@mantine/core";
 import { IconArrowsExchange } from "@tabler/icons-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface MoveDeckModalProps {
-  deck: Deck;
+  deck: DeckSummary;
   opened: boolean;
   setOpened: Function;
 }
@@ -17,22 +18,27 @@ export default function MoveDeckModal({
   opened,
   setOpened,
 }: MoveDeckModalProps) {
+  const [t] = useTranslation();
   const oldSuperDeck = deck.superDecks
     ? deck.superDecks[deck.superDecks.length - 1]
     : null;
 
-  const [decks, areDecksReady] = useDecks((decks) =>
+  const [decks, areDecksReady] = useDeckSummaries((decks) =>
     decks?.filter((d) => d.id !== oldSuperDeck)
   );
   const [newDeckID, setNewDeckID] = useState<string | null>(null);
 
   return (
-    <Modal title={"Move Deck"} opened={opened} onClose={() => setOpened(false)}>
+    <Modal
+      title={t("move.move-deck-title")}
+      opened={opened}
+      onClose={() => setOpened(false)}
+    >
       <Stack>
         <Select
           searchable
-          label="Move To"
-          nothingFoundMessage="No Decks Found"
+          label={t("move.move-to")}
+          nothingFoundMessage={t("move.no-decks-found")}
           disabled={!areDecksReady}
           //withinPortal
           data={
@@ -47,10 +53,7 @@ export default function MoveDeckModal({
           }}
         />
         {decks?.length === 0 && (
-          <Text fz="sm">
-            It seems like there are no other valid decks to move this deck to.
-            Try creating another one.
-          </Text>
+          <Text fz="sm">{t("move.no-decks-message-deck")}</Text>
         )}
         <Group justify="flex-end">
           <Button
@@ -68,7 +71,7 @@ export default function MoveDeckModal({
               !areDecksReady || !newDeckID || newDeckID === oldSuperDeck
             }
           >
-            Move Deck
+            {t("move.move-deck")}
           </Button>
         </Group>
       </Stack>

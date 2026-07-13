@@ -6,6 +6,7 @@ import { NoteType } from "@/logic/note/note";
 import { Button, Group, Modal, Select, Stack, Text } from "@mantine/core";
 import { IconArrowsExchange } from "@tabler/icons-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface MoveCardModalProps {
   card: Card<NoteType>;
@@ -20,17 +21,22 @@ export default function MoveCardModal({
   opened,
   setOpened,
 }: MoveCardModalProps) {
+  const [t] = useTranslation();
   const [decks, areDecksReady] = useDecks((decks) =>
     decks?.filter((deck) => deck.id !== card.deck)
   );
   const [newDeckID, setNewDeckID] = useState<string | null>(null);
   return (
-    <Modal title={"Move"} opened={opened} onClose={() => setOpened(false)}>
+    <Modal
+      title={t("move.title")}
+      opened={opened}
+      onClose={() => setOpened(false)}
+    >
       <Stack>
         <Select
           searchable
-          label="Move To"
-          nothingFoundMessage="No Decks Found"
+          label={t("move.move-to")}
+          nothingFoundMessage={t("move.no-decks-found")}
           disabled={!areDecksReady}
           //withinPortal
           data={
@@ -45,17 +51,14 @@ export default function MoveCardModal({
           }}
         />
         {decks?.length === 0 && (
-          <Text fz="sm">
-            It seems like there are no other valid decks to move this card to.
-            Try creating another one.
-          </Text>
+          <Text fz="sm">{t("move.no-decks-message")}</Text>
         )}
         <Group justify="flex-end">
           <Button
             onClick={() => {
               const newDeck = decks?.find((deck) => deck.id === newDeckID);
               if (newDeck !== undefined) {
-                moveCard(card, newDeck);
+                moveCard(card, newDeck.id);
                 successfullyMovedCardTo(newDeck.name);
                 setOpened(false);
               } else {
@@ -64,7 +67,7 @@ export default function MoveCardModal({
             leftSection={<IconArrowsExchange />}
             disabled={!areDecksReady || !newDeckID || newDeckID === card.deck}
           >
-            Move Card
+            {t("move.move-card")}
           </Button>
         </Group>
       </Stack>

@@ -1,19 +1,24 @@
-import { useLiveQuery } from "dexie-react-hooks";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { db } from "../../db";
+import { useDbQuery } from "../../useDbQuery";
 import { Deck } from "../deck";
 
 export function useDeckFromUrl(): [
   Deck | undefined,
   boolean,
   string | undefined,
+  URLSearchParams,
 ] {
   const deckId = useParams().deckId;
   const params = useParams().params;
+  const [searchParams] = useSearchParams();
 
-  return useLiveQuery(
-    () => db.decks.get(deckId || "").then((deck) => [deck, true, params]),
-    [deckId],
-    [undefined, false, undefined]
+  return useDbQuery(
+    () =>
+      db.decks
+        .get(deckId || "")
+        .then((deck) => [deck, true, params, searchParams]),
+    [deckId, searchParams],
+    [undefined, false, undefined, searchParams]
   );
 }

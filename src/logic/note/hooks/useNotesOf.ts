@@ -1,5 +1,5 @@
-import { useLiveQuery } from "dexie-react-hooks";
 import { Deck } from "../../deck/deck";
+import { useDbQuery } from "../../useDbQuery";
 import { getNotesOf } from "../getNotesOf";
 import { Note, NoteType } from "../note";
 
@@ -8,13 +8,13 @@ export function useNotesOf(
   excludeSubDecks?: boolean,
   limit?: number
 ): [Note<NoteType>[] | undefined, boolean] {
-  return useLiveQuery(
+  return useDbQuery(
     () =>
       getNotesOf(deck, excludeSubDecks, limit).then((notes) => [
         notes,
         deck !== undefined,
       ]),
-    [deck, excludeSubDecks],
+    [deck, excludeSubDecks, limit],
     [undefined, false]
   );
 }

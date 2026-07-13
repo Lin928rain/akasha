@@ -1,15 +1,16 @@
 import NewDeckModal from "@/app/deck/NewDeckModal";
-import { useTopLevelDecks } from "@/logic/deck/hooks/useTopLevelDecks";
+import { useTopLevelDeckSummaries } from "@/logic/deck/hooks/useTopLevelDeckSummaries";
 import { NavLink, Text, useMantineTheme } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
-import { t } from "i18next";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import DeckTree from "./DeckTree";
 
 export default function DeckList({ minimalMode }: { minimalMode: boolean }) {
+  const [t] = useTranslation();
   const theme = useMantineTheme();
-  const [decks, isReady] = useTopLevelDecks();
+  const [decks, isReady] = useTopLevelDeckSummaries();
   const isXsLayout = useMediaQuery("(min-width: " + theme.breakpoints.sm + ")");
   const [newDeckModalOpened, setNewDeckModalOpened] = useState(false);
 

@@ -1,6 +1,6 @@
 .indicator {
     position: absolute;
-    top: -2.5rem;
-    left: 0rem;
+    top: var(--mantine-spacing-xs);
+    left: var(--mantine-spacing-md);
     height: 1.5rem;
 }

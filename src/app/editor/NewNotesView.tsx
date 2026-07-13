@@ -25,18 +25,20 @@ import { useDeckFromUrl } from "@/logic/deck/hooks/useDeckFromUrl";
 import { useDecks } from "@/logic/deck/hooks/useDecks";
 import { NoteType } from "@/logic/note/note";
 import { useHotkeys, useOs } from "@mantine/hooks";
-import { t } from "i18next";
 import React from "react";
+import { useTranslation } from "react-i18next";
+import ConnectionStatusIndicator from "../shell/Header/ConnectionStatusIndicator";
 import { AppHeaderContent } from "../shell/Header/Header";
 import NewNotesFooter from "./NewNotesFooter";
 import classes from "./NewNotesView.module.css";
 
 function NewNotesView() {
+  const [t] = useTranslation();
   const navigate = useNavigate();
   const os = useOs();
 
   const [decks] = useDecks();
-  const [deck, isReady] = useDeckFromUrl();
+  const [deck, isReady, ,] = useDeckFromUrl();
   const [noteType, setNoteType] = useState<NoteType>(NoteType.Basic);
   const [requestedFinish, setRequestedFinish] = useState(false);
 
@@ -89,13 +91,16 @@ function NewNotesView() {
               <IconChevronLeft />
             </ActionIcon>
             <Title order={3}>{t("note.new.title")}</Title>
-            <ActionIcon
-              onClick={() => navigate("/settings/editing")}
-              variant="subtle"
-              color="gray"
-            >
-              <IconAdjustmentsHorizontal />
-            </ActionIcon>
+            <Group gap="xs" wrap="nowrap">
+              <ConnectionStatusIndicator />
+              <ActionIcon
+                onClick={() => navigate("/settings/editing")}
+                variant="subtle"
+                color="gray"
+              >
+                <IconAdjustmentsHorizontal />
+              </ActionIcon>
+            </Group>
           </Group>
         </AppHeaderContent>
 
@@ -140,12 +145,6 @@ function NewNotesView() {
                         NoteTypeLabels[NoteType.Cloze] +
                         t("global.feature-status.in-development"),
                       value: NoteType.Cloze,
-                    },
-                    {
-                      label:
-                        NoteTypeLabels[NoteType.ImageOcclusion] +
-                        t("global.feature-status.planned"),
-                      value: NoteType.ImageOcclusion,
                     },
                   ]}
                 />

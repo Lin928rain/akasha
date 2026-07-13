@@ -21,6 +21,10 @@
     "learning-cards-label": "Learning",
     "learning-cards-label_one": "1 Learning",
     "learning-cards-label_other": "{{ count }} Learning",
+    "delete-modal": {
+      "description": "You are about to delete this deck. This cannot be undone. Do you wish to continue?",
+      "title": "Delete Deck"
+    },
     "menu": {
       "debug": "Debug",
       "delete": "Delete",
@@ -41,13 +45,9 @@
       "name": "Name",
       "name-placeholder": "for example 'Spanish', 'Anatomy' or 'History",
       "new-deck": "Create New Deck",
-      "new-subdeck": "Create New Subdeck in {{superDeck}}",
       "submit": "Create"
     },
     "no-decks-found": "There are no decks here. Click the button above to create one!",
-    "notebook": {
-      "title": "Notebook"
-    },
     "rename": {
       "new-name": "New Name",
       "rename-button": "Rename",
@@ -57,10 +57,36 @@
     "review-cards-label_one": "1 Review",
     "review-cards-label_other": "{{ count }} Review",
     "settings": "Settings",
-    "subdeck": {
-      "add-subdeck-button": "Add",
-      "load-fail": "Failed to load sub decks.",
-      "title": "Subdecks"
+    "options": {
+      "auto-read-label": "Auto read on card",
+      "auto-read-description": "Automatically read visible text when a new card appears in this deck.",
+      "auto-read-note": "Only visible (not occluded) text is read.",
+      "auto-sentence-label": "Auto sentence generation",
+      "auto-sentence-description": "Automatically generate sentences using vocabulary from the card front side with AI and display them below the card content.",
+      "enable-batching-label": "Enable card batching",
+      "enable-batching-description": "Enable to divide cards into groups and study by group.",
+      "card-groups-title": "Card Groups",
+      "create-group": "Create Group",
+      "no-groups": "No groups yet. Click the button above to create your first group.",
+      "group-card-count": "{{count}} cards",
+      "group-card-count_one": "1 card",
+      "group-card-count_other": "{{count}} cards",
+      "group-learning-respect-limits-label": "Group learning respects limits",
+      "group-learning-respect-limits-description": "When enabled, group learning will be subject to session limits and daily new card limits. When disabled (default), group learning will study all cards in the group without limits."
+    },
+    "group": {
+      "create-title": "Create New Group",
+      "edit-title": "Edit Group",
+      "name-label": "Group Name",
+      "name-placeholder": "e.g., 'Key Vocabulary', 'Difficult Cards'",
+      "search-placeholder": "Search cards...",
+      "select-all": "Select All",
+      "deselect-all": "Deselect All",
+      "selected-count": "{{count}} cards selected",
+      "selected-count_one": "1 card selected",
+      "selected-count_other": "{{count}} cards selected",
+      "no-cards": "No cards in this deck",
+      "unnamed-card": "Unnamed Card"
     }
   },
   "edit-card": {
@@ -75,13 +101,27 @@
     },
     "no-items-title": "It is looking empty here!"
   },
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "start": "Start",
+    "error": "Error"
+  },
   "hero-deck-section": {
     "all-cards-done-learn-anyway": "Learn anyway",
     "all-cards-done-subtitle": "Return back tomorrow or choose to learn anyway.",
     "all-cards-done-title": "Congratulations! This deck is done for today!",
     "error": "Failed to load cards.",
+    "loading": "Loading cards...",
     "learn": "Learn",
-    "no-cards": "Start by creating some cards!"
+    "no-cards": "Start by creating some cards!",
+    "today-new-cards": "Today's new cards: {{count}}/{{limit}}"
+  },
+  "new-cards-limit": {
+    "title": "Daily New Cards Limit Reached",
+    "description": "You have already learned {{count}} new cards today, reaching the daily limit of {{limit}}. How would you like to continue?",
+    "review-only": "Review Only",
+    "mixed-ratio": "Mixed Ratio"
   },
   "home": {
     "create-deck": "Create a deck",
@@ -95,8 +135,18 @@
     "rate-hard": "Hard",
     "rate-good": "Good",
     "rate-easy": "Easy",
+    "rate-slash": "Slash!",
+    "slash-confirm-warning": "This card will not appear for 100 years. Are you sure?",
     "back-to-deck": "Back to Deck",
-    "show-answers": "Show Answer",
+    "show-answer": "Show Answer",
+    "new-card": "New Card",
+    "learn-card": "Learning",
+    "review-card": "Review Card",
+    "already-learned": "Already Learned",
+    "read-aloud": "Read aloud",
+    "stop-reading": "Stop reading",
+    "show-sentence": "Click to show sentence",
+    "generating-sentence": "Generating sentence...",
     "finished-accuracy-ratio": "Accuracy",
     "finished-button-home": "Go Home",
     "finished-button-to-deck": "Back to Deck",
@@ -104,9 +154,34 @@
     "finished-congrats-name": "Congratulations, {{name}}!",
     "finished-duration": "Time",
     "finished-info": "You have finished all cards of this deck for today.",
-    "finished-repetions-count": "Repetitions"
+    "finished-repetions-count": "Repetitions",
+    "voice-listening": "Voice Listening",
+    "voice-disabled": "Voice Control Disabled",
+    "voice-not-supported": "Browser does not support speech recognition",
+    "voice-start": "Start Voice Control",
+    "voice-stop": "Stop Voice Control",
+    "voice-commands-executed": "Executed {{count}} voice commands",
+    "voice-commands-executed_one": "Executed 1 voice command",
+    "voice-commands-executed_other": "Executed {{count}} voice commands"
+  },
+  "learn": {
+    "mode-selector": {
+      "title": "Select Learning Mode",
+      "all-cards": "Learn All Cards",
+      "all-cards-description": "Learn all cards in this deck",
+      "group-learning": "Group Learning",
+      "group-learning-description": "Learn only cards in a selected group",
+      "select-group": "Select Group",
+      "card-count": "{{count}} cards",
+      "card-count_one": "1 card",
+      "card-count_other": "{{count}} cards",
+      "no-groups-available": "No groups available. Create groups in deck options."
+    }
   },
   "manage-cards": {
+    "bulk-delete": "Delete selected ({{count}})",
+    "bulk-delete-description": "You are about to delete {{count}} notes and their cards. This cannot be undone.",
+    "bulk-delete-title": "Delete selected notes",
     "table": {
       "no-cards-found": "No Cards Found"
     },
@@ -128,6 +203,9 @@
       "submit-button": "Save Card",
       "submit-button-tooltip": "Save Card",
       "title": "Edit Note",
+      "toolbar": {
+        "toggle-occlusion": "Toggle occlusion"
+      },
       "type-specific": {
         "double-sided": {
           "back": "Back",
@@ -162,17 +240,9 @@
     },
     "type-double-sided": "Double Sided"
   },
-  "notebook": {
-    "individual-show-answer-toggle-tooltip": "Click to Show Answer",
-    "options": {
-      "exclude-subdecks": "Exclude subdecks",
-      "menu": "Notebook menu",
-      "show-answer": "Show Answers"
-    }
-  },
   "settings": {
     "about": {
-      "description": "This program was made by a student from Germany studying medicine. Skola is in early development. You may encounter bugs. If you do, I'd be very pleased if you reported them on the git repository.",
+      "description": "Akasha is in its early development stage, and you may encounter some errors. Some elements are inspired by Genshin Impact © miHoYo",
       "title": "About"
     },
     "appearance": {
@@ -181,6 +251,8 @@
       "color-scheme-dark": "Dark",
       "color-scheme-description": "Choose between always light or dark theme or use the color theme of your system.",
       "color-scheme-light": "Light",
+      "theme-color": "Theme Color",
+      "theme-color-description": "Choose the primary color for the application. This affects buttons, links, and other accent elements.",
       "title": "Appearance"
     },
     "database": {
@@ -189,7 +261,23 @@
     },
     "developer": {
       "description": "This is the developer tab. It will contain extra settings for developers.",
-      "title": "Developer"
+      "api-base-url": "Backend base URL",
+      "api-base-url-description": "Set a custom backend base URL (for example http://100.98.235.40:8787). Leave empty to use the default.",
+      "api-base-url-placeholder": "http://100.98.235.40:8787",
+      "api-base-url-save": "Save",
+      "api-base-url-reset": "Reset to default",
+      "api-base-url-test": "Test connection",
+      "api-base-url-current": "Effective API URL",
+      "api-base-url-default": "Default API URL",
+      "api-base-url-note": "New requests will use the updated address immediately.",
+      "title": "Developer",
+      "api-request-settings": "API Request Settings",
+      "max-concurrent-requests": "Max concurrent requests",
+      "max-concurrent-requests-description": "Maximum number of concurrent requests when loading cards. Higher values speed up loading but increase server load.",
+      "request-retry-attempts": "Request retry attempts",
+      "request-retry-attempts-description": "Maximum number of automatic retries when a request fails.",
+      "request-retry-delay": "Retry delay (ms)",
+      "request-retry-delay-description": "Base delay between retries in milliseconds. Actual delay uses exponential backoff."
     },
     "editing": {
       "editor-options": "Editor",
@@ -225,17 +313,83 @@
       "enable-visual-feedback-description": "Show a short color flash after answering a card depending on your rating.",
       "maximumInterval": "Maxium interval",
       "maximumIntervalDescription": "The maximum interval in days between two repetitions of a card",
+      "maxUniqueCardsPerSession": "Max Unique Cards Per Session",
+      "maxUniqueCardsPerSessionDescription": "Maximum number of unique cards to encounter in a single learning session. When reached, you can choose to finish reviewing seen cards or end the session. Set to 0 for unlimited.",
+      "maxCardsPerSession": "Max Cards Per Session",
+      "maxCardsPerSessionDescription": "Maximum number of cards (new + review) to study in a single learning session. Set to 0 for unlimited.",
+      "maxNewCardsPerDay": "Max New Cards Per Day",
+      "maxNewCardsPerDayDescription": "Maximum number of new cards to study per day. Set to 0 for unlimited.",
       "newToReviewRatio": "New Cards Per Reviews",
       "newToReviewRatioDescription": "This determines how many new cards will be new cards will be shown per review on average. A value of 0.5 means that reviews and new cards will be ordered in equal amounts.",
       "requestRetention": "Requested retention",
       "requestRetentionDescription": "Set which percentage of questions you want to be able to remember in the long-term. Note: High values will lead to more reviews and shorter intervals. Lower percentages will generally reduce the amount of learning. If requested retention is too low, you will forget your cards too often which may result in an increased learning demand. Recommended values lie between 0.70 and 0.95.",
-      "title": "Learning"
+      "title": "Learning",
+      "tts-title": "Read Aloud Settings",
+      "tts-base-url": "TTS service URL",
+      "tts-base-url-description": "Your Edge TTS proxy address, e.g. http://your-server:9191",
+      "tts-base-url-placeholder": "http://localhost:9191",
+      "tts-voice-zh": "Chinese voice",
+      "tts-voice-en": "English voice",
+      "tts-rate": "Speech rate",
+      "tts-rate-description": "Range -50 to +50",
+      "tts-test-title": "Voice test",
+      "tts-test-zh": "Test Chinese",
+      "tts-test-en": "Test English",
+      "tts-test-zh-sample": "你好，这是中文朗读测试。",
+      "tts-test-en-sample": "Hello, this is an English voice test."
+    },
+    "voice": {
+      "title": "Voice Control",
+      "enabled": "Enable Voice Control",
+      "enabled-description": "Enable voice commands to control the learning flow",
+      "language": "Recognition Language",
+      "language-description": "Select the language for speech recognition",
+      "language-zh": "Chinese",
+      "language-en": "English",
+      "confidence-threshold": "Sensitivity",
+      "confidence-threshold-description": "Lower threshold makes it easier to recognize commands but may cause false triggers, higher threshold is more accurate but may miss commands",
+      "available-commands": "Available Commands",
+      "tips-title": "Tips",
+      "tips-content": "Make sure microphone permission is enabled and use in a quiet environment for best results. Simply say the text shown on the buttons to execute the corresponding action.",
+      "command-showAnswer": "Show Answer",
+      "command-answerAgain": "Again",
+      "command-answerHard": "Hard",
+      "command-answerGood": "Good",
+      "command-answerEasy": "Easy",
+      "command-answerSlash": "Slash",
+      "command-stopTts": "Stop",
+      "command-replayTts": "Replay"
+    },
+    "account": {
+      "title": "Account",
+      "password": {
+        "title": "Change Password",
+        "current-label": "Current Password",
+        "current-placeholder": "Enter your current password",
+        "new-label": "New Password",
+        "new-placeholder": "Enter your new password",
+        "confirm-label": "Confirm New Password",
+        "confirm-placeholder": "Confirm your new password",
+        "save-button": "Change Password",
+        "success-title": "Success",
+        "success-message": "Password changed successfully!",
+        "error": {
+          "required": "All fields are required.",
+          "mismatch": "New passwords do not match.",
+          "too-short": "Password must be at least 6 characters.",
+          "failed": "Failed to change password."
+        }
+      }
     },
     "title": "Settings"
   },
   "sidebar": {
     "decks-add": "Add deck",
-    "decks-title": "Decks"
+    "decks-title": "Decks",
+    "search": "Search",
+    "search-placeholder": "Search...",
+    "logout-action": "Sign out",
+    "account-label": "Account"
   },
   "spotlight": {
     "no-results": "No results"
@@ -244,6 +398,53 @@
     "title": "Statistics"
   },
   "today": {
-    "title": "Today"
+    "title": "Today",
+    "overview-title": "Today's Overview",
+    "new-cards-progress": "Today's Progress: {{count}}/{{limit}} New Cards",
+    "start-learning": "Start Learning",
+    "due-decks-title": "Due Decks",
+    "total-due": "{{count}} Decks Total",
+    "loading-decks": "Loading decks...",
+    "no-due-decks": "No decks are due for review today. Create some cards or take a break!",
+    "all-done-title": "All Done for Today!",
+    "all-done-message": "Congratulations! You've completed all due cards for today. Take a good rest and come back tomorrow!"
+  },
+  "auth": {
+    "sign-in": {
+      "title": "Sign in",
+      "action": "Sign in",
+      "switch-label": "Need an account?",
+      "switch-action": "Create one",
+      "description": "Use your email and password to access your decks."
+    },
+    "sign-up": {
+      "title": "Create account",
+      "action": "Create account",
+      "switch-label": "Already have an account?",
+      "switch-action": "Sign in",
+      "description": "Use your email and password to access your decks."
+    },
+    "email-label": "Email",
+    "email-placeholder": "name@example.com",
+    "password-label": "Password",
+    "password-placeholder": "Your password",
+    "error": {
+      "title": "Authentication error",
+      "required": "Email and password are required.",
+      "failed": "Authentication failed."
+    },
+    "connection": {
+      "title": "Connection Settings",
+      "api-url-label": "Backend API URL",
+      "api-url-placeholder": "http://your-api-host:8787",
+      "save-reload": "Save and Reload",
+      "settings-title": "Connection settings",
+      "saved": "Configuration saved. Reloading...",
+      "failed": "Failed to save config."
+    }
+  },
+  "image-occlusion": {
+    "click-to-reveal": "Click to reveal",
+    "click-to-reveal-sentence": "Click to show sentence"
   }
 }

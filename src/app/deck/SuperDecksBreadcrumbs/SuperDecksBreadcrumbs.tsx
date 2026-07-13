@@ -4,11 +4,11 @@ import { IconCards, IconHome } from "@tabler/icons-react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Deck } from "../../../logic/deck/deck";
+import { DeckSummary } from "../../../logic/deck/deck";
 import classes from "./SuperDecksBreadcrumbs.module.css";
 
 interface SuperDecksBreadcrumbsProps {
-  superDecks: Deck[] | undefined;
+  superDecks: DeckSummary[] | undefined;
 }
 function SuperDecksBreadcrumbs({ superDecks }: SuperDecksBreadcrumbsProps) {
   const navigate = useNavigate();

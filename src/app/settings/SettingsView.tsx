@@ -1,5 +1,6 @@
 import { useSetting } from "@/logic/settings/hooks/useSetting";
 import { Center, Stack, Tabs, Title } from "@mantine/core";
+import { useDocumentTitle } from "@mantine/hooks";
 import {
   IconBolt,
   IconBraces,
@@ -9,19 +10,20 @@ import {
   IconPencil,
   IconSettings,
 } from "@tabler/icons-react";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppHeaderContent } from "../shell/Header/Header";
 import AboutSettingsView from "./AboutSettingsView";
 import AppearanceSettingsView from "./AppearanceSettingsView";
 import DatabaseSettingsView from "./DatabaseSettingsView/DatabaseSettingsView";
+import DeveloperSettingsView from "./DeveloperSettingsView";
 import EditingSettingsView from "./EditingSettingsView/EditingSettingsView";
 import GeneralSettingsView from "./GeneralSettingsView";
 import LearnSettingsView from "./LearnSettingsView";
-import { useDocumentTitle } from "@mantine/hooks";
 
 export default function SettingsView() {
-  useDocumentTitle(`${t("settings.title")} | Skola`);
+  const [t] = useTranslation();
+  useDocumentTitle(`${t("settings.title")} | Akasha`);
   const [developerMode] = useSetting("developerMode");
   const navigate = useNavigate();
   const { section } = useParams();
@@ -83,8 +85,8 @@ export default function SettingsView() {
         <Tabs.Panel value="about">
           <AboutSettingsView />
         </Tabs.Panel>
-        <Tabs.Panel value="Developer">
-          {t("settings.developer.description")}
+        <Tabs.Panel value="developer">
+          <DeveloperSettingsView />
         </Tabs.Panel>
       </Tabs>
     </Stack>

@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 import { db } from "../db";
-import { Deck } from "./deck";
+import { Deck, DeckSummary } from "./deck";
 
 export async function newDeck(
   name: string,
-  superDeck?: Deck,
+  superDeck?: Deck | DeckSummary,
   description?: string
 ): Promise<string> {
   const uuid = uuidv4();
@@ -37,6 +37,7 @@ export async function newDeck(
     options: {
       newToReviewRatio: 0.5,
       dailyNewCards: 25,
+      autoReadOnCard: false,
     },
   });
   return uuid;

@@ -1,8 +1,9 @@
 import { Anchor, Stack, Text } from "@mantine/core";
-import { t } from "i18next";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 export default function AboutSettingsView() {
+  const [t] = useTranslation();
   return (
     <Stack gap="xl" align="start">
       <Text size="sm">{t("settings.about.description")}</Text>

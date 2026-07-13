@@ -16,6 +16,7 @@ import { Editor } from "@tiptap/react";
 import { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import classes from "./DoubleSidedCardEditor.module.css";
+import OcclusionToggleControl from "./OcclusionToggleControl";
 
 interface DoubleSidedCardEditorProps {
   note: Note<NoteType.DoubleSided> | null;
@@ -75,13 +76,22 @@ function DoubleSidedCardEditor({
         <Text fz="sm" fw={600}>
           {t("note.edit.type-specific.double-sided.front")}
         </Text>
-        <NoteEditor editor={editor1} key="front" className={classes} />
+        <NoteEditor
+          editor={editor1}
+          key="front"
+          className={classes}
+          controls={<OcclusionToggleControl editor={editor1} />}
+        />
       </Stack>
       <Stack gap={0}>
         <Text fz="sm" fw={600}>
           {t("note.edit.type-specific.double-sided.back")}
         </Text>
-        <NoteEditor editor={editor2} key="back" />
+        <NoteEditor
+          editor={editor2}
+          key="back"
+          controls={<OcclusionToggleControl editor={editor2} />}
+        />
       </Stack>
     </Stack>
   );

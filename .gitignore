@@ -25,3 +25,15 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 *.key
+
+# nginx
+nginx.pid
+nginx.log
+*.log
+
+# Supabase local development
+docker/volumes
+skola-code-backup-*.zip
+
+# local environment variables
+.env

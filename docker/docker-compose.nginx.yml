@@ -1,0 +1,62 @@
+# 使用 nginx 统一访问前后端的开发环境配置
+# 启动：docker compose -f docker/docker-compose.nginx.yml up -d
+# 停止：docker compose -f docker/docker-compose.nginx.yml down
+
+name: akasha-nginx
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: akasha-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - akasha-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  frontend:
+    image: node:20-alpine
+    container_name: akasha-frontend
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ..:/app
+    command: sh -c "npm install && npm run start"
+    expose:
+      - "5173"
+    environment:
+      - VITE_API_URL=http://localhost/api
+      - VITE_SUPABASE_URL=http://localhost/supabase
+    networks:
+      - akasha-network
+
+  backend:
+    image: node:20-alpine
+    container_name: akasha-backend
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ..:/app
+    command: sh -c "npm install && npm run server"
+    expose:
+      - "8787"
+    environment:
+      - PORT=8787
+      - SUPABASE_URL=http://host.docker.internal:8000
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY:-your-service-role-key}
+      - TTS_BASE_URL=http://host.docker.internal:9191
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - akasha-network
+
+networks:
+  akasha-network:
+    driver: bridge

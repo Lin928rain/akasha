@@ -1,5 +1,7 @@
+import { getDeck } from "@/logic/deck/getDeck";
 import { Stack, TextInput, Textarea } from "@mantine/core";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import ImportButton from "./ImportButton";
 import { ImportFromSourceProps } from "./ImportModal";
 import { importCards } from "./importLogic";
@@ -11,6 +13,7 @@ export default function ImportFromPaste({
   setImportStatus,
   deck,
 }: ImportFromPasteProps) {
+  const [t] = useTranslation();
   const [pastedText, setPastedText] = useState<string>("");
   const [cardSeparator] = useState<string>("\n");
   const [questionAnswerSeperator, setQuestionAnswerSeperator] =
@@ -26,8 +29,8 @@ export default function ImportFromPaste({
   return (
     <Stack align="start">
       <Textarea
-        label="Paste your cards here"
-        placeholder="Question1&#9;Answer1&#10;Question2&#9;Answer2&#10;..."
+        label={t("import-export.paste-label")}
+        placeholder={t("import-export.paste-placeholder")}
         value={pastedText}
         onChange={(e) => setPastedText(e.currentTarget.value)}
         minRows={8}
@@ -35,16 +38,17 @@ export default function ImportFromPaste({
         style={{ width: "100%" }}
       />
       <TextInput
-        label="Question / Answer Separator"
+        label={t("import-export.separator-label")}
         value={questionAnswerSeperator}
         onChange={(e) => setQuestionAnswerSeperator(e.currentTarget.value)}
-        description="Default is Tab character. Change if your data uses a different separator."
+        description={t("import-export.separator-description")}
       />
       <ImportButton
         importFunction={async () => {
+          const fullDeck = deck ? await getDeck(deck.id) : undefined;
           await importCards(
             pastedText,
-            deck,
+            fullDeck,
             cardSeparator,
             questionAnswerSeperator
           );

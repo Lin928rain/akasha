@@ -15,8 +15,8 @@ import {
   IconEdit,
   IconTrash,
 } from "@tabler/icons-react";
-import { t } from "i18next";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import EditNoteModal from "./EditNoteModal";
 import MoveNoteModal from "./MoveNoteModal";
 
@@ -33,6 +33,7 @@ function NoteMenu({
   withEdit = true,
   withShortcuts = true,
 }: NoteMenuProps) {
+  const [t] = useTranslation();
   const [editModalOpened, editModal] = useDisclosure(false);
 
   useState<boolean>(false);

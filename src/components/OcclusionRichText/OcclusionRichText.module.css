@@ -1,0 +1,52 @@
+.occlusionBlock {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.125rem 0.5rem;
+  margin: 0 0.125rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 60px;
+  min-height: 24px;
+  text-align: center;
+  user-select: none;
+  position: relative;
+  vertical-align: baseline;
+}
+
+.occlusionBlockHidden {
+  background-color: var(--mantine-primary-color-filled);
+  border: 1px solid var(--mantine-primary-color-filled-hover);
+  color: var(--mantine-color-white);
+}
+
+.occlusionBlockHidden:hover {
+  background-color: var(--mantine-primary-color-filled-hover);
+  transform: scale(1.02);
+}
+
+.occlusionBlockRevealed {
+  background-color: transparent;
+  border: 1px dashed var(--mantine-primary-color-6);
+  text-align: left;
+}
+
+.occlusionBlockRevealed:hover {
+  background-color: var(--mantine-primary-color-0);
+}
+
+.occlusionHint {
+  color: var(--mantine-color-white);
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1;
+}
+
+.occlusionBlockHidden:hover .occlusionHint {
+  color: var(--mantine-color-white);
+}
+
+.revealedText {
+  color: inherit;
+}

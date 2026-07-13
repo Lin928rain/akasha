@@ -1,5 +1,7 @@
+import TtsSettingsPanel from "@/components/TtsSettings/TtsSettingsPanel";
+import VoiceSettingsPanel from "@/components/VoiceControl/VoiceSettingsPanel";
 import { useSetting } from "@/logic/settings/hooks/useSetting";
-import { Stack, Text } from "@mantine/core";
+import { Divider, Stack, Text } from "@mantine/core";
 import { useTranslation } from "react-i18next";
 import SettingsInput from "./SettingsInput";
 
@@ -33,6 +35,22 @@ export default function LearnSettingsView() {
         settingsKey="learn_newToReviewRatio"
         inputType="number"
       />
+      <SettingsInput
+        label={t("settings.learn.maxUniqueCardsPerSession")}
+        description={t("settings.learn.maxUniqueCardsPerSessionDescription")}
+        settingsKey="learn_maxUniqueCardsPerSession"
+        inputType="number"
+      />
+      <SettingsInput
+        label={t("settings.learn.maxNewCardsPerDay")}
+        description={t("settings.learn.maxNewCardsPerDayDescription")}
+        settingsKey="learn_maxNewCardsPerDay"
+        inputType="number"
+      />
+      <Divider w="100%" />
+      <TtsSettingsPanel />
+      <Divider w="100%" />
+      <VoiceSettingsPanel />
       <Text>{w.join(",")}</Text>
     </Stack>
   );

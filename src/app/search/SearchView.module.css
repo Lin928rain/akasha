@@ -1,0 +1,66 @@
+.wrapper {
+  width: 100%;
+  max-width: 64rem;
+  height: 100%;
+  overflow: hidden;
+}
+
+.content {
+  height: 100%;
+  overflow: auto;
+}
+
+.resultCard {
+  width: 100%;
+}
+
+.resultBody {
+  min-width: 0;
+}
+
+.resultHeader {
+  width: 100%;
+}
+
+.badges {
+  min-width: 0;
+}
+
+.resultText {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.actions {
+  margin-left: auto;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.ratingGroup {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.ratingButton {
+  min-width: 3.5rem;
+}
+
+@media (max-width: 48em) {
+  .resultHeader {
+    align-items: stretch;
+  }
+
+  .actions {
+    margin-left: 0;
+    overflow-x: visible;
+  }
+
+  .ratingGroup {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    min-width: 0;
+  }
+}

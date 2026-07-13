@@ -18,6 +18,10 @@ export function useGlobalScheduler() {
   return scheduler;
 }
 
+export function getGlobalScheduler() {
+  return scheduler;
+}
+
 export function updateGlobalScheduler() {
   setSetting("globalScheduler_maximumInterval", scheduler.p.maximum_interval);
   setSetting("globalScheduler_requestRetention", scheduler.p.request_retention);

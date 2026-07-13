@@ -1,23 +1,29 @@
 import LazySkeleton from "@/components/LazySkeleton";
+import { useDeckCardCountsMap } from "@/logic/card/hooks/useDeckCardCounts";
 import { Stack, Text } from "@mantine/core";
 import { useHotkeys } from "@mantine/hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Deck } from "../../logic/deck/deck";
+import { DeckSummary } from "../../logic/deck/deck";
 import DeckPreview from "./DeckPreview";
 
 interface DeckTableProps {
-  deckList?: Deck[];
+  deckList?: DeckSummary[];
   isReady: boolean;
 }
 
 function DeckTable({ deckList, isReady }: DeckTableProps) {
   const [t] = useTranslation();
+  const sortedDecks =
+    deckList?.slice().sort((a, b) => a.name.localeCompare(b.name)) ?? [];
+  const [countsMap, countsReady] = useDeckCardCountsMap(
+    sortedDecks.map((deck) => deck.id)
+  );
 
   const navigate = useNavigate();
   useHotkeys(
-    deckList
+    sortedDecks
       ?.slice(0, 9)
       .map((d, i) => [(i + 1).toString(), () => navigate(`/deck/${d.id}`)]) ??
       []
@@ -26,11 +32,15 @@ function DeckTable({ deckList, isReady }: DeckTableProps) {
   return isReady && deckList ? (
     deckList.length !== 0 ? (
       <Stack gap="0" w="100%">
-        {deckList
-          .sort((a: Deck, b: Deck) => a.name.localeCompare(b.name))
-          .map((deck, index) => (
-            <DeckPreview key={deck.id} deck={deck} i={index} />
-          ))}
+        {sortedDecks.map((deck, index) => (
+          <DeckPreview
+            key={deck.id}
+            deck={deck}
+            i={index}
+            counts={countsMap[deck.id]}
+            countsReady={countsReady}
+          />
+        ))}
       </Stack>
     ) : (
       <Text fz="sm" c="dimmed" pt="lg" ta="center">

@@ -1,3 +1,4 @@
+import { OcclusionRichText } from "@/components/OcclusionRichText/OcclusionRichText";
 import { Card } from "@/logic/card/card";
 import { NoteContent } from "@/logic/note/NoteContent";
 import { NoteType } from "@/logic/note/note";
@@ -9,15 +10,14 @@ export default function displayDoubleSidedQuestion(
 ) {
   function FrontComponent() {
     return (
-      <Title
-        order={3}
-        fw={600}
-        dangerouslySetInnerHTML={{
-          __html:
+      <Title order={3} fw={600}>
+        <OcclusionRichText
+          html={
             (card.content.frontIsField1 ? content?.field1 : content?.field2) ??
-            "error",
-        }}
-      ></Title>
+            "error"
+          }
+        />
+      </Title>
     );
   }
   return <FrontComponent />;

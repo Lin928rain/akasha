@@ -1,0 +1,16 @@
+.statCard {
+  min-width: 120px;
+  text-align: center;
+}
+
+.deckItem {
+  transition: background-color 0.2s ease;
+}
+
+.deckItem:hover {
+  background-color: var(--mantine-color-gray-0);
+}
+
+[data-mantine-color-scheme="dark"] .deckItem:hover {
+  background-color: var(--mantine-color-dark-6);
+}

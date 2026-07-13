@@ -1,6 +1,6 @@
 import { Group, Paper, RingProgress, Text } from "@mantine/core";
-import { t } from "i18next";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type StorageInfo = StorageEstimate & {
   usageString?: string;
@@ -34,6 +34,7 @@ async function calulateStorageInfo(setStorageInfo: Function) {
 }
 
 export default function StorageSection() {
+  const [t] = useTranslation();
   const [storageInfo, setStorageInfo] = useState<StorageInfo>({});
 
   useEffect(() => {

@@ -16,7 +16,7 @@ import {
   useEditor,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { ImageDrop } from "./ImageDrop";
 import classes from "./NoteEditor.module.css";
@@ -80,6 +80,25 @@ export function useNoteEditor(props: {
 
 function NoteEditor({ editor, controls, className }: NoteEditorProps) {
   const [settings, areSettingsReady] = useSettings();
+  const [showToolbar, setShowToolbar] = useState(false);
+
+  useEffect(() => {
+    if (!editor) {
+      setShowToolbar(false);
+      return;
+    }
+
+    const handleFocus = () => setShowToolbar(settings.useToolbar);
+    const handleBlur = () => setShowToolbar(false);
+
+    editor.on("focus", handleFocus);
+    editor.on("blur", handleBlur);
+
+    return () => {
+      editor.off("focus", handleFocus);
+      editor.off("blur", handleBlur);
+    };
+  }, [editor, settings.useToolbar]);
 
   const addImage = (data: DataTransfer) => {
     const { files } = data;
@@ -108,8 +127,12 @@ function NoteEditor({ editor, controls, className }: NoteEditorProps) {
       >
         {areSettingsReady && (
           <>
-            {editor && editor.isFocused && settings.useToolbar && (
-              <RichTextEditor.Toolbar className={classes.toolbar} tabIndex={-1}>
+            {editor && showToolbar && (
+              <RichTextEditor.Toolbar
+                key="toolbar"
+                className={classes.toolbar}
+                tabIndex={-1}
+              >
                 <NoteEditorControls controls={controls} editor={editor} />
               </RichTextEditor.Toolbar>
             )}

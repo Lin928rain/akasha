@@ -1,4 +1,4 @@
-import { useTopLevelDecks } from "@/logic/deck/hooks/useTopLevelDecks";
+import { useTopLevelDeckSummaries } from "@/logic/deck/hooks/useTopLevelDeckSummaries";
 import { useSetting } from "@/logic/settings/hooks/useSetting";
 import { Button, Center, Kbd, Stack, Title, Tooltip } from "@mantine/core";
 import { useDocumentTitle, useHotkeys } from "@mantine/hooks";
@@ -11,10 +11,10 @@ import NewDeckModal from "../deck/NewDeckModal";
 import { AppHeaderContent } from "../shell/Header/Header";
 
 export default function HomeView({}: {}) {
-  useDocumentTitle("Skola");
+  useDocumentTitle("Akasha");
   const [t] = useTranslation();
   const [newDeckModalOpened, setNewDeckModalOpened] = useState(false);
-  const [decks, isReady] = useTopLevelDecks();
+  const [decks, isReady] = useTopLevelDeckSummaries();
   const [userName] = useSetting("name");
 
   useHotkeys([["n", () => setNewDeckModalOpened(true)]]);

@@ -4,6 +4,7 @@ import NewNotesView from "@/app/editor/NewNotesView";
 import NoteExplorerView from "@/app/explorer/NoteExplorerView";
 import HomeView from "@/app/home/HomeView";
 import LearnView from "@/app/learn/LearnView/LearnView";
+import SearchView from "@/app/search/SearchView";
 import SettingsView from "@/app/settings/SettingsView";
 import StatsView from "@/app/statistics/StatsView";
 import TodayView from "@/app/today/TodayView";
@@ -21,7 +22,7 @@ const router = createHashRouter(
       children: [
         {
           index: true,
-          element: <Navigate to="/home" replace={true} />,
+          element: <Navigate to="/today" replace={true} />,
         },
         {
           path: "/home",
@@ -58,6 +59,10 @@ const router = createHashRouter(
         {
           path: "/today",
           element: <TodayView />,
+        },
+        {
+          path: "/search",
+          element: <SearchView />,
         },
         {
           path: "/stats/:deckId?",

@@ -1,8 +1,8 @@
 import { Button, Kbd, Tooltip } from "@mantine/core";
 import { useHotkeys, useOs } from "@mantine/hooks";
 import { IconHistory } from "@tabler/icons-react";
-import { t } from "i18next";
 import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Deck } from "../../logic/deck/deck";
 import classes from "./NewNotesView.module.css";
@@ -17,6 +17,7 @@ export default function NewNotesFooter({
   setRequestedFinish,
   deck,
 }: NewNotesFooterProps) {
+  const [t] = useTranslation();
   const navigate = useNavigate();
   const os = useOs();
 

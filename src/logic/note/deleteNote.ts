@@ -10,14 +10,22 @@ import { Note, NoteType } from "./note";
 export function deleteNote(note: Note<NoteType>) {
   return db.transaction("rw", db.notes, db.cards, db.decks, async () => {
     await db.notes.delete(note.id);
-    const cardCollection = db.cards.where("note").equals(note.id);
-    cardCollection.delete();
+    const cardsToDelete = await db.cards
+      .where("note")
+      .equals(note.id)
+      .toArray();
+    await Promise.all(cardsToDelete.map((card) => db.cards.delete(card.id)));
     const deck = await db.decks.get(note.deck);
+    if (!deck) {
+      return;
+    }
+    const [remainingNotes, remainingCards] = await Promise.all([
+      db.notes.where("deck").equals(note.deck).toArray(),
+      db.cards.where("deck").equals(note.deck).toArray(),
+    ]);
     await db.decks.update(note.deck, {
-      notes: deck?.notes.filter((n) => n !== note.id),
-      cards: deck?.cards.filter((c) =>
-        cardCollection.primaryKeys().then((a) => !a.includes(c))
-      ),
+      notes: remainingNotes.map((n) => n.id),
+      cards: remainingCards.map((c) => c.id),
     });
   });
 }

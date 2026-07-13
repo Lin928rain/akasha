@@ -26,6 +26,7 @@ export interface CardSkeleton {
   history: ReviewLog[];
   model: Model;
   deck: string;
+  userId?: string;
   creationDate: Date;
   customOrder?: number;
 }

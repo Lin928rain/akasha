@@ -3,16 +3,17 @@ import { renameDeck } from "@/logic/deck/renameDeck";
 import { Button, Group, Kbd, TextInput, Title, Tooltip } from "@mantine/core";
 import { getHotkeyHandler } from "@mantine/hooks";
 import { IconPlus } from "@tabler/icons-react";
-import { t } from "i18next";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Deck } from "../../logic/deck/deck";
+import { DeckSummary } from "../../logic/deck/deck";
 
 type TitleSectionProps = {
-  deck: Deck | undefined;
+  deck: DeckSummary | undefined;
 };
 
 export default function TitleSection({ deck }: TitleSectionProps) {
+  const [t] = useTranslation();
   const navigate = useNavigate();
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [newTitle, setNewTitle] = useState<string>("");

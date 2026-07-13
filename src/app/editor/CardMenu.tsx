@@ -21,8 +21,8 @@ import {
   IconEdit,
   IconTrash,
 } from "@tabler/icons-react";
-import { t } from "i18next";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import DebugCardModal from "../DebugCardModal/DebugCardModal";
 
@@ -32,6 +32,7 @@ interface CardMenuProps {
 }
 
 function CardMenu({ card, onDelete }: CardMenuProps) {
+  const [t] = useTranslation();
   const navigate = useNavigate();
 
   const [developerMode] = useSetting("developerMode");

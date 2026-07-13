@@ -27,10 +27,13 @@ export async function newNote<T extends NoteType>(
     ),
   };
   await db.transaction("rw", db.decks, db.notes, async () => {
-    await db.notes.add(note, note.id);
-    deck.notes.push(note.id);
+    await db.notes.add(note);
+    const storedDeck = await db.decks.get(deck.id);
+    if (!storedDeck) {
+      return;
+    }
     await db.decks.update(deck.id, {
-      notes: deck.notes,
+      notes: [...storedDeck.notes, note.id],
     });
   });
   return note.id;

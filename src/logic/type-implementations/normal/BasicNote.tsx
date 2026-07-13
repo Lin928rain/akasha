@@ -1,4 +1,5 @@
 import NormalCardEditor from "@/app/editor/NoteEditor/NormalCardEditor";
+import { OcclusionRichText } from "@/components/OcclusionRichText/OcclusionRichText";
 import { NoteEditorProps, NoteTypeAdapter } from "@/logic/NoteTypeAdapter";
 import { Card, HTMLtoPreviewString } from "@/logic/card/card";
 import { createCardSkeleton } from "@/logic/card/createCardSkeleton";
@@ -52,24 +53,32 @@ export const BasicNoteTypeAdapter: NoteTypeAdapter<NoteType.Basic> = {
     content?: NoteContent<NoteType.Basic>
   ) {
     return (
-      <Title
-        order={3}
-        fw={600}
-        dangerouslySetInnerHTML={{ __html: content?.front ?? "" }}
-      ></Title>
+      <Title order={3} fw={600}>
+        <OcclusionRichText html={content?.front ?? ""} />
+      </Title>
     );
   },
 
   displayAnswer(
-    card: Card<NoteType.Basic>,
+    _card: Card<NoteType.Basic>,
     content?: NoteContent<NoteType.Basic>,
     place?: "learn" | "notebook"
   ) {
     return (
       <Stack gap={place === "notebook" ? "sm" : "lg"} w="100%">
-        {BasicNoteTypeAdapter.displayQuestion(card, content)}
+        <Title order={3} fw={600}>
+          <OcclusionRichText
+            html={content?.front ?? ""}
+            controlledIsVisible={true}
+          />
+        </Title>
         <Divider className={common.lightBorderColor} />
-        <div dangerouslySetInnerHTML={{ __html: content?.back ?? "" }}></div>
+        <div>
+          <OcclusionRichText
+            html={content?.back ?? ""}
+            controlledIsVisible={true}
+          />
+        </div>
       </Stack>
     );
   },
@@ -78,33 +87,16 @@ export const BasicNoteTypeAdapter: NoteTypeAdapter<NoteType.Basic> = {
     note: Note<NoteType.Basic>,
     showAllAnswers: "strict" | "optional" | "none"
   ) {
-    const [individualShowAnswer, setIndividualShowAnswer] = useState(false);
-
-    return (
-      <Stack
-        gap="sm"
-        w="100%"
-        onClick={() => setIndividualShowAnswer(!individualShowAnswer)}
-      >
-        <Title
-          order={3}
-          fw={600}
-          dangerouslySetInnerHTML={{ __html: note.content?.front ?? "" }}
-        />
-        {showAllAnswers !== "none" && (
-          <>
-            <Divider className={common.lightBorderColor} />
-            <div
-              dangerouslySetInnerHTML={{ __html: note.content?.back ?? "" }}
-            />
-          </>
-        )}
-      </Stack>
-    );
+    return <BasicNoteDisplay note={note} showAllAnswers={showAllAnswers} />;
   },
 
   getSortFieldFromNoteContent(content?: NoteContent<NoteType.Basic>) {
-    return HTMLtoPreviewString(content?.front ?? "[error]");
+    return HTMLtoPreviewString(
+      (content?.front ?? "[error]").replace(
+        /\{\{([\s\S]*?)\}\}/g,
+        (_match, inner) => inner
+      )
+    );
   },
 
   editor({
@@ -131,3 +123,46 @@ export const BasicNoteTypeAdapter: NoteTypeAdapter<NoteType.Basic> = {
     deleteCard(card);
   },
 };
+
+function BasicNoteDisplay({
+  note,
+  showAllAnswers,
+}: {
+  note: Note<NoteType.Basic>;
+  showAllAnswers: "strict" | "optional" | "none";
+}) {
+  const [showAnswer, setShowAnswer] = useState(showAllAnswers !== "none");
+  const shouldShowAnswer =
+    showAllAnswers !== "none" &&
+    (showAllAnswers === "strict" ? true : showAnswer);
+
+  return (
+    <Stack
+      gap="sm"
+      w="100%"
+      onClick={() => {
+        if (showAllAnswers !== "strict" && showAllAnswers !== "none") {
+          setShowAnswer((prev) => !prev);
+        }
+      }}
+    >
+      <Title order={3} fw={600}>
+        <OcclusionRichText
+          html={note.content?.front ?? ""}
+          controlledIsVisible={true}
+        />
+      </Title>
+      {shouldShowAnswer && (
+        <>
+          <Divider className={common.lightBorderColor} />
+          <div>
+            <OcclusionRichText
+              html={note.content?.back ?? ""}
+              controlledIsVisible={true}
+            />
+          </div>
+        </>
+      )}
+    </Stack>
+  );
+}

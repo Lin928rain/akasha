@@ -1,26 +1,38 @@
 import EditorOptionsMenu from "@/app/editor/EditorOptionsMenu";
 import { AppHeaderContent } from "@/app/shell/Header/Header";
+import DangerousConfirmModal from "@/components/DangerousConfirmModal";
 import SelectDecksHeader from "@/components/SelectDecksHeader";
 import { useDecks } from "@/logic/deck/hooks/useDecks";
+import { deleteNotesBulk } from "@/logic/note/deleteNotesBulk";
 import { getNote } from "@/logic/note/getNote";
 import { useNotesWith } from "@/logic/note/hooks/useNotesWith";
 import { Note, NoteType } from "@/logic/note/note";
 import { NoteSortFunction, NoteSorts } from "@/logic/note/sort";
-import { Box, Group, Space, Stack, TextInput, Title } from "@mantine/core";
+import {
+  Box,
+  Button,
+  Group,
+  Space,
+  Stack,
+  TextInput,
+  Title,
+} from "@mantine/core";
 import { useDebouncedState, useDocumentTitle } from "@mantine/hooks";
-import { IconSearch } from "@tabler/icons-react";
-import { t } from "i18next";
-import { useEffect, useState } from "react";
+import { IconSearch, IconTrash } from "@tabler/icons-react";
+import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import NoteTable from "../NoteTable/NoteTable";
 import EditNoteModal from "../editor/EditNoteModal";
 import { EditNoteView } from "../editor/EditNoteView";
+import ConnectionStatusIndicator from "../shell/Header/ConnectionStatusIndicator";
 import classes from "./NoteExplorerView.module.css";
 
 const ALL_DECKS_ID = "all";
 
 function NoteExplorerView() {
-  useDocumentTitle(`${t("manage-cards.title")} | Skola`);
+  const [t] = useTranslation();
+  useDocumentTitle(`${t("manage-cards.title")} | Akasha`);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -45,24 +57,33 @@ function NoteExplorerView() {
     sortDirection !== undefined ? sortDirection : true,
   ]);
 
-  const [notes] = useNotesWith(
+  const [rawNotes] = useNotesWith(
     (n) =>
-      n
-        .orderBy("sortField")
-        .filter(
-          (note) =>
-            note.sortField.toLowerCase().includes(filter.toLowerCase()) &&
-            (deckId === undefined || note.deck === deckId)
-        )
-        .toArray()
-        .then((m) => m.sort(sort[0](sort[1] ? 1 : -1))),
-    [location, filter, location, sort]
+      deckId !== undefined
+        ? n.where("deck").equals(deckId).toArray()
+        : n.toArray(),
+    [deckId]
   );
+
+  const normalizedFilter = filter.trim().toLowerCase();
+  const notes = useMemo(() => {
+    if (!rawNotes) return undefined;
+    const filtered =
+      normalizedFilter.length === 0
+        ? rawNotes
+        : rawNotes.filter((note) =>
+            note.sortField.toLowerCase().includes(normalizedFilter)
+          );
+    return filtered.slice().sort(sort[0](sort[1] ? 1 : -1));
+  }, [rawNotes, normalizedFilter, sort]);
 
   const [editNoteModalOpened, setEditNoteModalOpened] =
     useState<boolean>(false);
 
   const [openedNote, setOpenedNote] = useState<Note<NoteType> | undefined>();
+  const [selectedNotes, setSelectedNotes] = useState<Note<NoteType>[]>([]);
+  const [deleteSelectedModalOpened, setDeleteSelectedModalOpened] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (noteId) {
@@ -83,13 +104,14 @@ function NoteExplorerView() {
       }}
     >
       <AppHeaderContent>
-        <AppHeaderContent>
-          <Group justify="space-between" gap="xs" wrap="nowrap">
-            <Space />
-            <Title order={3}>{t("manage-cards.title")}</Title>
+        <Group justify="space-between" gap="xs" wrap="nowrap">
+          <Space />
+          <Title order={3}>{t("manage-cards.title")}</Title>
+          <Group gap="xs" wrap="nowrap">
+            <ConnectionStatusIndicator />
             <EditorOptionsMenu />
           </Group>
-        </AppHeaderContent>
+        </Group>
       </AppHeaderContent>
       <Group align="end" gap="xs">
         <SelectDecksHeader
@@ -100,13 +122,24 @@ function NoteExplorerView() {
       </Group>
       <div className={classes.container}>
         <Stack>
-          <TextInput
-            leftSection={<IconSearch size={16} />}
-            defaultValue={filter}
-            placeholder="Filter Notes"
-            w="100%"
-            onChange={(event) => setFilter(event.currentTarget.value)}
-          />
+          <Group gap="xs" align="end">
+            <TextInput
+              leftSection={<IconSearch size={16} />}
+              defaultValue={filter}
+              placeholder="Filter Notes"
+              w="100%"
+              onChange={(event) => setFilter(event.currentTarget.value)}
+            />
+            <Button
+              leftSection={<IconTrash size={16} />}
+              color="red"
+              variant="light"
+              disabled={selectedNotes.length === 0}
+              onClick={() => setDeleteSelectedModalOpened(true)}
+            >
+              {t("manage-cards.bulk-delete", { count: selectedNotes.length })}
+            </Button>
+          </Group>
           {notes && (
             <NoteTable
               noteSet={notes ?? []}
@@ -115,6 +148,8 @@ function NoteExplorerView() {
               openModal={() => setEditNoteModalOpened(true)}
               sort={sort}
               setSort={setSort}
+              selectedNotes={selectedNotes}
+              setSelectedNotes={setSelectedNotes}
             />
           )}
         </Stack>
@@ -129,6 +164,24 @@ function NoteExplorerView() {
           opened={editNoteModalOpened}
         />
       )}
+      <DangerousConfirmModal
+        dangerousAction={async () => {
+          const selectedIds = new Set(selectedNotes.map((note) => note.id));
+          await deleteNotesBulk(selectedNotes);
+          if (openedNote && selectedIds.has(openedNote.id)) {
+            setOpenedNote(undefined);
+          }
+          setSelectedNotes([]);
+        }}
+        dangerousDependencies={[]}
+        dangerousTitle={t("manage-cards.bulk-delete-title")}
+        dangerousDescription={t("manage-cards.bulk-delete-description", {
+          count: selectedNotes.length,
+        })}
+        suppressDbNotifications={true}
+        opened={deleteSelectedModalOpened}
+        setOpened={setDeleteSelectedModalOpened}
+      />
     </Stack>
   );
 }

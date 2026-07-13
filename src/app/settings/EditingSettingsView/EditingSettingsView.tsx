@@ -11,8 +11,8 @@ import {
   IconSubscript,
   IconSuperscript,
 } from "@tabler/icons-react";
-import { t } from "i18next";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import Section from "../Section";
 import SettingsInput from "../SettingsInput";
 import classes from "./EditingSettingsView.module.css";
@@ -20,6 +20,7 @@ import classes from "./EditingSettingsView.module.css";
 interface EditingSettingsViewProps {}
 
 export default function EditingSettingsView({}: EditingSettingsViewProps) {
+  const [t] = useTranslation();
   return (
     <Stack className={classes.container} gap="xl">
       <Section title={t("settings.editing.editor-options")}>

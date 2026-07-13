@@ -11,10 +11,11 @@ import { Note } from "@/logic/note/note";
 import { BasicNoteTypeAdapter } from "@/logic/type-implementations/normal/BasicNote";
 import { Stack, Text } from "@mantine/core";
 import { Editor } from "@tiptap/react";
-import { t } from "i18next";
 import { useCallback, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import classes from "./NormalCardEditor.module.css";
 import NoteEditor, { useNoteEditor } from "./NoteEditor";
+import OcclusionToggleControl from "./OcclusionToggleControl";
 
 interface NormalCardEditorProps {
   note: Note<NoteType.Basic> | null;
@@ -33,6 +34,7 @@ function NormalCardEditor({
   setRequestedFinish,
   focusSelectNoteType,
 }: NormalCardEditorProps) {
+  const [t] = useTranslation();
   const noteContent = note?.content ?? {
     type: NoteType.Basic,
     front: "",
@@ -74,13 +76,18 @@ function NormalCardEditor({
           editor={frontEditor}
           key="front"
           className={classes.front}
+          controls={<OcclusionToggleControl editor={frontEditor} />}
         />
       </Stack>
       <Stack gap={0}>
         <Text fz="sm" fw={600}>
           {t("note.edit.type-specific.normal.back")}
         </Text>
-        <NoteEditor editor={backEditor} key="back" />
+        <NoteEditor
+          editor={backEditor}
+          key="back"
+          controls={<OcclusionToggleControl editor={backEditor} />}
+        />
       </Stack>
     </Stack>
   );

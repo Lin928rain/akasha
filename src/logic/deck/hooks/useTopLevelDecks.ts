@@ -1,14 +1,14 @@
-import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "../../db";
-import { Deck } from "../deck";
+import { useDbQuery } from "../../useDbQuery";
+import { DeckSummary } from "../deck";
+import { getDeckSummaries } from "../getDeckSummaries";
 
-export function useTopLevelDecks(): [Deck[] | undefined, boolean] {
-    return useLiveQuery(
-        async () => {
-            const val = await db.decks.toArray();
-            return [val, true];
-        },
-        [],
-        [undefined, false],
-    );
+export function useTopLevelDecks(): [DeckSummary[] | undefined, boolean] {
+  return useDbQuery<[DeckSummary[] | undefined, boolean]>(
+    async () => {
+      const val = await getDeckSummaries();
+      return [val, true];
+    },
+    [],
+    [undefined, false]
+  );
 }

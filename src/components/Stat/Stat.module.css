@@ -1,10 +1,9 @@
 .stat {
   padding: 0.75rem;
   border-radius: var(--mantine-radius-sm);
-  width: 0;
-  max-width: 7rem;
-  flex-basis: 0;
-  flex: 1 1 0;
+  min-width: 5rem;
+  max-width: 8rem;
+  flex: 1 1 auto;
   overflow: hidden;
   border: solid 0.0625rem;
 }
@@ -27,5 +26,5 @@
 .statName {
   font-weight: 500;
   font-size: var(--mantine-font-size-sm);
-  width: 100%;
+  white-space: nowrap;
 }

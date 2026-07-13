@@ -13,17 +13,41 @@
 
 .learnViewWrapper {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 3.6875rem);
+  min-height: 0;
 }
 
 .cardContainer {
   padding: var(--mantine-spacing-lg);
+  flex: 1;
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mantine-spacing-sm);
+  width: 100%;
+  height: 100%;
 }
 .card {
   width: 100%;
   max-width: 600px;
   position: relative;
+  margin-top: auto;
+  margin-bottom: auto;
 
   padding: var(--mantine-spacing-md);
+  padding-top: calc(var(--mantine-spacing-md) + 1.75rem);
   border: solid 1px var(--mantine-color-light-border);
   box-shadow: var(--mantine-shadow-xs);
 
@@ -41,6 +65,71 @@
   }
 }
 
+.cardContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-md);
+  padding-right: 1.5rem;
+}
+
+.lineButtonOverlay {
+  position: absolute;
+  top: 0;
+  right: 0.25rem;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.lineButton {
+  position: absolute;
+  right: 0;
+  transform: translateY(-50%);
+  pointer-events: auto;
+  padding: 0;
+  min-width: 0;
+  min-height: 0;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 999px;
+}
+
+.spinIcon {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.cardWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.transitionOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(
+    in srgb,
+    var(--mantine-color-body),
+    transparent 70%
+  );
+  border-radius: var(--mantine-radius-default);
+  pointer-events: none;
+}
+
 .footerContainer {
   background-color: light-dark(
     var(--mantine-color-white),
@@ -55,4 +144,101 @@
   bottom: 0;
   left: 0;
   right: 0;
+}
+
+.notePrefetchProgress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-lg);
+  background-color: var(--mantine-color-body);
+  border-bottom: 1px solid var(--mantine-color-light-border);
+  z-index: 10;
+}
+
+.notePrefetchError {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: var(--mantine-spacing-sm) var(--mantine-spacing-lg);
+  background-color: var(--mantine-color-red-filled);
+  border-bottom: 1px solid var(--mantine-color-light-border);
+  z-index: 10;
+}
+
+.sentenceContainer {
+  margin-top: -0.25rem;
+  display: block;
+}
+
+.sentenceButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.125rem 0.5rem;
+  margin: 0 0.125rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 60px;
+  min-height: 24px;
+  text-align: center;
+  user-select: none;
+  background-color: var(--mantine-primary-color-filled);
+  border: 1px solid var(--mantine-primary-color-filled-hover);
+  color: var(--mantine-color-white);
+  font-size: 12px;
+  font-weight: 600;
+  font-style: italic;
+  line-height: 1;
+}
+
+.sentenceButton:hover {
+  background-color: var(--mantine-primary-color-filled-hover);
+  transform: scale(1.02);
+}
+
+.sentenceText {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  margin: 0 0.125rem;
+  border-radius: 4px;
+  background-color: transparent;
+  border: 1px dashed var(--mantine-primary-color-6);
+  color: var(--mantine-color-text);
+  font-size: var(--mantine-font-size-sm);
+  line-height: 1.6;
+  text-align: left;
+}
+
+.sentenceText:hover {
+  background-color: var(--mantine-primary-color-0);
+}
+
+.sentenceLoading {
+  color: var(--mantine-color-dimmed);
+  font-size: var(--mantine-font-size-xs);
+  font-style: italic;
+}
+
+.sentenceContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sentenceTranslation {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  margin: 0 0.125rem;
+  border-radius: 4px;
+  background-color: var(--mantine-primary-color-0);
+  border: 1px dashed var(--mantine-primary-color-6);
+  color: var(--mantine-color-text);
+  font-size: var(--mantine-font-size-xs);
+  line-height: 1.6;
+  text-align: left;
+  font-style: italic;
 }

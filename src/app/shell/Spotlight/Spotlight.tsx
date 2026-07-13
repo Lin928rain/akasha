@@ -1,44 +1,51 @@
 import { getAdapter } from "@/logic/NoteTypeAdapter";
 import { getDeck } from "@/logic/deck/getDeck";
+import { getDeckSummaries } from "@/logic/deck/getDeckSummaries";
 import { getSuperDecks } from "@/logic/deck/getSuperDecks";
-import { useDecks } from "@/logic/deck/hooks/useDecks";
 import { useNotesWith } from "@/logic/note/hooks/useNotesWith";
 import { NoteType } from "@/logic/note/note";
 import { Note } from "@/logic/note/note";
 import { NoteSorts } from "@/logic/note/sort";
 import { useShowShortcutHints } from "@/logic/settings/hooks/useShowShortcutHints";
+import { useDbQuery } from "@/logic/useDbQuery";
 import { Group, Kbd, UnstyledButton, rem } from "@mantine/core";
 import { useDebouncedState, useOs } from "@mantine/hooks";
 import { Spotlight, spotlight } from "@mantine/spotlight";
 import { IconCards, IconSearch, IconSquare } from "@tabler/icons-react";
 import cx from "clsx";
-import { t } from "i18next";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import classes from "./Spotlight.module.css";
 interface NoteWithPreview extends Note<NoteType> {
   breadcrumb: string[];
 }
 
-const useSearchNote = (filter: string) => {
+const useSearchNote = (filter: string, enabled: boolean) => {
   const [filteredNotes, setFilteredNotes] = useState<NoteWithPreview[]>([]);
   const [notes] = useNotesWith(
     (n) =>
-      n
-        .toArray()
-        .then((m) =>
-          m
-            .filter((note) =>
-              getAdapter(note)
-                .getSortFieldFromNoteContent(note.content)
-                .toLowerCase()
-                .includes(filter.toLowerCase())
+      enabled
+        ? n
+            .toArray()
+            .then((m) =>
+              m
+                .filter((note) =>
+                  getAdapter(note)
+                    .getSortFieldFromNoteContent(note.content)
+                    .toLowerCase()
+                    .includes(filter.toLowerCase())
+                )
+                .sort(NoteSorts.bySortField(1))
             )
-            .sort(NoteSorts.bySortField(1))
-        ),
-    [filter]
+        : Promise.resolve([]),
+    [filter, enabled]
   );
   useEffect(() => {
+    if (!enabled) {
+      setFilteredNotes([]);
+      return;
+    }
     async function filterNotes(notes: Note<NoteType>[]) {
       const decksPromises = notes?.map(async (note) => {
         const deck = await getDeck(note.deck);
@@ -65,13 +72,22 @@ const useSearchNote = (filter: string) => {
 export default function SpotlightCard({
   minimalMode,
 }: { minimalMode: boolean }) {
+  const [t] = useTranslation();
   const navigate = useNavigate();
   const os = useOs();
   const showShortcutHints = useShowShortcutHints();
 
   const [filter, setFilter] = useDebouncedState("", 250);
-  const [filteredDecks] = useDecks();
-  const filteredNotes = useSearchNote(filter);
+  const shouldSearch = filter.trim().length > 0;
+  const [filteredDecks] = useDbQuery(
+    () =>
+      shouldSearch
+        ? getDeckSummaries().then((decks) => [decks, true])
+        : Promise.resolve([[], true]),
+    [filter, shouldSearch],
+    [[], false]
+  );
+  const filteredNotes = useSearchNote(filter, shouldSearch);
 
   const possibleActions = [
     {
@@ -133,7 +149,7 @@ export default function SpotlightCard({
             <>
               <span className={classes.spotlightButtonSection}>
                 <IconSearch size={14} className={classes.spotlightButtonIcon} />
-                Search
+                {t("sidebar.search")}
               </span>
               {showShortcutHints && (
                 <span className={classes.spotlightButtonSection}>
@@ -161,7 +177,7 @@ export default function SpotlightCard({
         scrollable={true}
         searchProps={{
           leftSection: <IconSearch size={18} stroke={2} />,
-          placeholder: "Search...",
+          placeholder: t("sidebar.search-placeholder"),
         }}
         transitionProps={{ transition: "pop", duration: 100 }}
       />

@@ -11,10 +11,15 @@ import { Card } from "./card";
 
 export async function newCard(card: Card<NoteType>, deck: Deck) {
   card.deck = deck.id;
-  deck.cards.push(card.id);
-  await db.transaction("rw", db.decks, db.cards, () => {
-    db.cards.add(card, card.id);
-    db.decks.update(deck.id, { cards: deck.cards });
+  await db.transaction("rw", db.decks, db.cards, async () => {
+    await db.cards.add(card);
+    const storedDeck = await db.decks.get(deck.id);
+    if (!storedDeck) {
+      return;
+    }
+    await db.decks.update(deck.id, {
+      cards: [...storedDeck.cards, card.id],
+    });
   });
   return card.id;
 }

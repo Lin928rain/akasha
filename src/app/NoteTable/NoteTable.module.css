@@ -18,3 +18,48 @@
     color: var(--mantine-color-white);
     transition: none;
 }
+
+.virtualTable {
+    table-layout: fixed;
+}
+
+.virtualHeader {
+    overflow: visible;
+}
+
+.virtualTable :global(.mantine-datatable-header-selector-cell) {
+    padding-top: calc(var(--mantine-spacing-xs) + 4px);
+    padding-bottom: calc(var(--mantine-spacing-xs) + 4px);
+    vertical-align: middle;
+    overflow: visible;
+}
+
+.virtualTable thead {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    overflow: visible;
+}
+
+.virtualTable thead tr {
+    height: 48px;
+}
+
+.virtualTable thead th {
+    vertical-align: middle;
+    overflow: visible;
+}
+
+.virtualTable tbody {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: var(--virtual-body-height);
+}
+
+.virtualRow {
+    position: absolute;
+    width: 100%;
+    display: table;
+    table-layout: fixed;
+}

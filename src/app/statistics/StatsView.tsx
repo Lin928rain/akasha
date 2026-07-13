@@ -1,21 +1,22 @@
-import { getAllCards } from "@/logic/card/getAllCards";
-import { getCardsOf } from "@/logic/card/getCardsOf";
-import { getSimplifiedStatesOf } from "@/logic/card/getSimplifiedStatesOf";
-import { getDeck } from "@/logic/deck/getDeck";
 import { useDecks } from "@/logic/deck/hooks/useDecks";
+import {
+  ReviewSummaryRow,
+  getCardStateSummary,
+  getReviewSummary,
+} from "@/logic/statistics";
 import { BarChart, DonutChart } from "@mantine/charts";
 import { Center, SegmentedControl, Stack, Title } from "@mantine/core";
+import { useDocumentTitle } from "@mantine/hooks";
 import { State } from "fsrs.js";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useParams } from "react-router-dom";
 import SelectDecksHeader from "../../components/SelectDecksHeader";
-import { db } from "../../logic/db";
 import { AppHeaderContent } from "../shell/Header/Header";
-import { t } from "i18next";
-import { useDocumentTitle } from "@mantine/hooks";
 
 function StatsView() {
-  useDocumentTitle(`${t("statistics.title")} | Skola`);
+  const [t] = useTranslation();
+  useDocumentTitle(`${t("statistics.title")} | Akasha`);
   const [decks] = useDecks();
   const navigate = useNavigate();
 
@@ -24,50 +25,13 @@ function StatsView() {
   );
   const deckId = useParams().deckId;
 
-  const [reviewData, setReviewData] = useState<
-    {
-      day: string;
-      [State.Review]: number;
-      [State.Learning]: number;
-      [State.New]: number;
-    }[]
-  >([]);
+  const [reviewData, setReviewData] = useState<ReviewSummaryRow[]>([]);
 
   useEffect(() => {
-    loadStatistics();
-    async function loadStatistics() {
-      const temporaryArray = [];
-      const now = new Date();
-      const days = timeFrame === "week" ? 7 : timeFrame === "month" ? 30 : 365;
-
-      for (let i = 0; i < days; i++) {
-        const date = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-        const formattedDate = date.toISOString().split("T")[0];
-
-        const dbquery = deckId
-          ? db.statistics.where({ deck: deckId, day: formattedDate })
-          : db.statistics.where("day").equals(formattedDate);
-        const stats = await dbquery.toArray();
-
-        temporaryArray.push({
-          day: formattedDate,
-          [State.Review]: stats?.reduce(
-            (acc, stat) => acc + stat.cards[State.Review],
-            0
-          ),
-          [State.Learning]: stats?.reduce(
-            (acc, stat) =>
-              acc + stat.cards[State.Learning] + stat.cards[State.Relearning],
-            0
-          ),
-          [State.New]: stats?.reduce(
-            (acc, stat) => acc + stat.cards[State.New],
-            0
-          ),
-        });
-      }
-      setReviewData(await Promise.all(temporaryArray));
-    }
+    const days = timeFrame === "week" ? 7 : timeFrame === "month" ? 30 : 365;
+    getReviewSummary({ deckId, days }).then((rows) => {
+      setReviewData(rows);
+    });
   }, [timeFrame, deckId]);
 
   const [cardStateData, setCardStateData] = useState<
@@ -75,48 +39,43 @@ function StatsView() {
   >([]);
 
   useEffect(() => {
-    loadCardStateData();
-    async function loadCardStateData() {
-      const cards = await (deckId
-        ? getDeck(deckId).then((deck) => getCardsOf(deck))
-        : getAllCards());
-      const simplifiedStateData = getSimplifiedStatesOf(cards ?? []);
+    getCardStateSummary(deckId).then((summary) => {
       setCardStateData([
         {
-          name: "New",
-          value: simplifiedStateData.new,
+          name: t("deck.new-cards-label"),
+          value: summary.new,
           color: "grape.6",
         },
         {
-          name: "Learning",
-          value: simplifiedStateData.learning,
+          name: t("deck.learning-cards-label"),
+          value: summary.learning,
           color: "orange.6",
         },
         {
-          name: "Review",
-          value: simplifiedStateData.review,
+          name: t("deck.review-cards-label"),
+          value: summary.review,
           color: "blue.6",
         },
         {
-          name: "Not Due",
-          value: simplifiedStateData.notDue,
+          name: t("statistics.not-due"),
+          value: summary.notDue,
           color: "gray.6",
         },
       ]);
-    }
-  }, [deckId]);
+    });
+  }, [deckId, t]);
 
   return (
     <>
       <AppHeaderContent>
         <Center>
-          <Title order={3}>Statistics</Title>
+          <Title order={3}>{t("statistics.title")}</Title>
         </Center>
       </AppHeaderContent>
 
       <Stack w="100%" maw="600px" gap="xl">
         <SelectDecksHeader
-          label="Showing Statistics of"
+          label={t("statistics.showing-of")}
           decks={decks}
           onSelect={(deckId) => navigate(`/stats/${deckId}`)}
         />
@@ -124,9 +83,9 @@ function StatsView() {
         <Stack gap="xs">
           <SegmentedControl
             data={[
-              { value: "week", label: "Week" },
-              { value: "month", label: "Month" },
-              { value: "year", label: "Year" },
+              { value: "week", label: t("statistics.week") },
+              { value: "month", label: t("statistics.month") },
+              { value: "year", label: t("statistics.year") },
             ]}
             size="xs"
             value={timeFrame}
@@ -146,15 +105,19 @@ function StatsView() {
             series={[
               {
                 name: State.Review.toString(),
-                label: "Review",
+                label: t("deck.review-cards-label"),
                 color: "blue.6",
               },
               {
                 name: State.Learning.toString(),
-                label: "Learning",
+                label: t("deck.learning-cards-label"),
                 color: "orange.6",
               },
-              { name: State.New.toString(), label: "New", color: "grape.6" },
+              {
+                name: State.New.toString(),
+                label: t("deck.new-cards-label"),
+                color: "grape.6",
+              },
             ]}
             tickLine="y"
           />

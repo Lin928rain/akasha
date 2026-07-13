@@ -1,12 +1,12 @@
 import EmptyNotice from "@/components/EmptyNotice";
+import NewCardsLimitModal from "@/components/NewCardsLimitModal";
 import Stat from "@/components/Stat/Stat";
-import { useSimplifiedStatesOf } from "@/logic/card/hooks/useSimplifiedStatesOf";
-import { Deck } from "@/logic/deck/deck";
+import { useDeckCardCounts } from "@/logic/card/hooks/useDeckCardCounts";
+import { useTodayNewCardsCount } from "@/logic/dailyNewCards";
+import { DeckSummary } from "@/logic/deck/deck";
+import { useSetting } from "@/logic/settings/hooks/useSetting";
 import { Button, Group, Paper, Stack, Text, Title } from "@mantine/core";
-import classes from "./HeroDeckSection.module.css";
-
-import { useCardsOf } from "@/logic/card/hooks/useCardsOf";
-import { useHotkeys } from "@mantine/hooks";
+import { useDisclosure, useHotkeys } from "@mantine/hooks";
 import {
   IconBolt,
   IconBook,
@@ -16,36 +16,73 @@ import {
 } from "@tabler/icons-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import classes from "./HeroDeckSection.module.css";
 
 interface HeroDeckSectionProps {
-  deck?: Deck;
+  deck?: DeckSummary;
   isDeckReady: boolean;
 }
 
-function HeroDeckSection({ deck }: HeroDeckSectionProps) {
+function HeroDeckSection({ deck, isDeckReady }: HeroDeckSectionProps) {
   const navigate = useNavigate();
   const [t] = useTranslation();
-  useHotkeys([["Space", startLearning]]);
+  const [modalOpened, { open: openModal, close: closeModal }] =
+    useDisclosure(false);
 
-  const [cards, areCardsReady] = useCardsOf(deck);
-  const states = useSimplifiedStatesOf(cards);
+  const [counts, areCountsReady] = useDeckCardCounts(deck?.id);
+
+  const [maxNewCardsPerDay] = useSetting("learn_maxNewCardsPerDay");
+  const todayNewCardsCount = useTodayNewCardsCount();
+  const isLoadingCounts =
+    !isDeckReady || !areCountsReady || (!!deck && !counts);
 
   function isDone() {
-    return states.new + states.learning + states.review === 0;
+    if (!counts) {
+      return true;
+    }
+    return counts.new + counts.learning + counts.review === 0;
   }
 
-  function startLearning() {
-    navigate("/learn/" + deck?.id + (isDone() ? "/all" : ""));
+  function startLearning(learnMode?: "review-only" | "mixed") {
+    let url = `/learn/${deck?.id}`;
+    if (isDone()) {
+      url += "/all";
+    }
+    if (learnMode === "review-only") {
+      url += "?newCardsLimit=0";
+    } else if (learnMode === "mixed") {
+      // mixed 模式下，突破每日新卡片限制，只受单次学习卡片数量上限限制
+      url += "?newCardsLimitUnlimited=1";
+    }
+    navigate(url);
   }
+
+  function handleStartLearning() {
+    if (!deck) return;
+
+    // 检查是否已达到今日新卡片上限
+    if (
+      maxNewCardsPerDay > 0 &&
+      todayNewCardsCount >= maxNewCardsPerDay &&
+      (counts?.new ?? 0) > 0
+    ) {
+      openModal();
+      return;
+    }
+
+    startLearning();
+  }
+
+  useHotkeys([["Space", handleStartLearning]]);
 
   return (
     <Paper className={classes.container} withBorder shadow="xs">
-      {areCardsReady &&
-        (!cards ? (
-          <Text c="red" fw={700}>
-            {t("hero-deck-section.error")}
-          </Text>
-        ) : cards.length === 0 ? (
+      {isLoadingCounts ? (
+        <Text c="dimmed" fw={600}>
+          {t("hero-deck-section.loading")}
+        </Text>
+      ) : counts ? (
+        counts.new + counts.learning + counts.review === 0 ? (
           <EmptyNotice
             icon={IconFile}
             description={t("hero-deck-section.no-cards")}
@@ -58,7 +95,7 @@ function HeroDeckSection({ deck }: HeroDeckSectionProps) {
             <Text fz="sm">
               {t("hero-deck-section.all-cards-done-subtitle")}
             </Text>
-            <Button variant="subtle" w="50%" onClick={startLearning}>
+            <Button variant="subtle" w="50%" onClick={handleStartLearning}>
               {t("hero-deck-section.all-cards-done-learn-anyway")}
             </Button>
           </Stack>
@@ -71,36 +108,54 @@ function HeroDeckSection({ deck }: HeroDeckSectionProps) {
               className={classes.statsGroup}
             >
               <Stat
-                value={states.new}
+                value={counts.new}
                 name={t("deck.new-cards-label")}
                 color="grape"
                 icon={IconSparkles}
               />
               <Stat
-                value={states.learning}
+                value={counts.learning}
                 name={t("deck.learning-cards-label")}
                 color="orange"
                 icon={IconCircleArrowUpRight}
               />
               <Stat
-                value={states.review}
+                value={counts.review}
                 name={t("deck.review-cards-label")}
                 color="blue"
                 icon={IconBook}
               />
             </Group>
+            {maxNewCardsPerDay > 0 && (
+              <Text fz="xs" c="dimmed">
+                {t("hero-deck-section.today-new-cards", {
+                  count: todayNewCardsCount,
+                  limit: maxNewCardsPerDay,
+                })}
+              </Text>
+            )}
             <Button
               disabled={
-                !deck || states.new + states.learning + states.review === 0
+                !deck || counts.new + counts.learning + counts.review === 0
               }
               leftSection={<IconBolt />}
               w="50%"
-              onClick={startLearning}
+              onClick={handleStartLearning}
             >
               {t("hero-deck-section.learn")}
             </Button>
           </Stack>
-        ))}
+        )
+      ) : null}
+
+      <NewCardsLimitModal
+        opened={modalOpened}
+        setOpened={closeModal}
+        todayCount={todayNewCardsCount}
+        limit={maxNewCardsPerDay}
+        onReviewOnly={() => startLearning("review-only")}
+        onMixedRatio={() => startLearning("mixed")}
+      />
     </Paper>
   );
 }
